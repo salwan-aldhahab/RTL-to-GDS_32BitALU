@@ -1,15 +1,12 @@
-module mux4x1 #(
-    parameter integer WIDTH = 1
-) (
-    input  wire [WIDTH-1:0] a,
-    input  wire [WIDTH-1:0] b,
-    input  wire [WIDTH-1:0] c,
-    input  wire [WIDTH-1:0] d,
+module mux4x1 (
+    input  wire a,
+    input  wire b,
+    input  wire c,
+    input  wire d,
     input  wire [1:0]       sel,
-    output wire [WIDTH-1:0] y
+    output wire y
 );
-    reg [WIDTH-1:0] y_reg;
-
+    reg y_reg;
     always @(*) begin
         case (sel)
             2'b00: y_reg = a;
