@@ -1,4 +1,4 @@
-module alu (
+module 1bit_alu (
     input  wire a_i,
     input  wire b_i,
     input  wire cin_i,

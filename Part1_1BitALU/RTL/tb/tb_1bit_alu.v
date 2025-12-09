@@ -7,7 +7,7 @@ reg [3:0] sel;
 wire f;
 wire cout;
 
-alu uut (
+1bit_alu uut (
     .a_i   (a),
     .b_i   (b),
     .cin_i (cin),
