@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 module logic_circuit (
     input  wire a_i,
     input  wire b_i,

@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 module full_adder (
     input  wire a_i,
     input  wire b_i,
