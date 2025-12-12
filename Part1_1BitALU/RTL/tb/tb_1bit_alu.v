@@ -1,5 +1,3 @@
-`timescale 1ns/1ps
-
 module tb_1bit_alu;
 
 reg a;

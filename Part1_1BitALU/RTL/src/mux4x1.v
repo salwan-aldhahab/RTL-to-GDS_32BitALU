@@ -1,4 +1,3 @@
-`timescale 1ns/1ps
 module mux4x1 (
     input  wire a,
     input  wire b,

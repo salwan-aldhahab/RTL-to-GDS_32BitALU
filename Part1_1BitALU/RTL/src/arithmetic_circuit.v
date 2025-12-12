@@ -1,4 +1,3 @@
-`timescale 1ns/1ps
 module arithmetic_circuit (
     input  wire a_i,
     input  wire b_i,
