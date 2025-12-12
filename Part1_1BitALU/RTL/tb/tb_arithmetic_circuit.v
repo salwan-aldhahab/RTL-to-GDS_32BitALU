@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module tb_arithmetic_circuit;
 
 reg a;
