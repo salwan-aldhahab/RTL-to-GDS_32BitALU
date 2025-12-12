@@ -29,11 +29,9 @@ initial begin
     sel = 4'b0011; cin = 1'b0; #5; // F = A - 1
     sel = 4'b0011; cin = 1'b1; #5; // F = A
 
-    sel = 4'b0100; cin = 1'b0; #5; // F = A & B
-    sel = 4'b0100; cin = 1'b1; #5; // F = A & B
+    sel = 4'b0100; cin = 1'bx; #5; // F = A & B
 
-    sel = 4'b0101; cin = 1'b0; #5; // F = A | B
-    sel = 4'b0101; cin = 1'b1; #5; // F = A | B
+    sel = 4'b0101; cin = 1'bx; #5; // F = A | B
 
     sel = 4'b0110; cin = 1'bx; #5; // F = A ^ B
 
