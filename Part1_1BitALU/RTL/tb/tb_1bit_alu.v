@@ -37,8 +37,8 @@ initial begin
 
     sel = 4'b0111; cin = 1'bx; #5; // F = A'
 
-    sel = 4'b10xx; cin = 1'bx; #5; // F = shr A
-    sel = 4'b11xx; cin = 1'bx; #5; // F = shl A
+    sel = 4'b1000; cin = 1'bx; #5; // F = shr A
+    sel = 4'b1100; cin = 1'bx; #5; // F = shl A
     $finish;
 end
 
