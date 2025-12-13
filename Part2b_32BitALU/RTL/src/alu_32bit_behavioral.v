@@ -1,4 +1,4 @@
-module 32bit_alu_behavioral (
+module alu_32bit_behavioral (
     input  wire [31:0] a,      // Operand A
     input  wire [31:0] b,      // Operand B
     input  wire        cin,    // Carry-in / borrow-in

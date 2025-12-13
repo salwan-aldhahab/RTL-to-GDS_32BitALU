@@ -8,7 +8,7 @@ module tb_32bit_alu_behavioral;
     wire [31:0] f;
     wire        cout;
 
-    32bit_alu_behavioral dut (
+    alu_32bit_behavioral dut (
         .a   (a),
         .b   (b),
         .cin (cin),

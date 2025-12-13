@@ -7,7 +7,7 @@ module tb_32bit_alu;
     wire [31:0] f;
     wire        cout;
 
-    32bit_alu uut (
+    alu_32bit uut (
         .a_i   (a),
         .b_i   (b),
         .cin_i (cin),
