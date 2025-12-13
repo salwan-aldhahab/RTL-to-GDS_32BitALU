@@ -1,5 +1,3 @@
-`timescale 1ns/1ps
-
 module tb_32bit_alu_behavioral;
     reg  [31:0] a;
     reg  [31:0] b;
