@@ -36,8 +36,8 @@ module tb_32bit_alu;
 
         sel = 4'b0111; cin = 1'bx; #10; // F = A'
 
-        sel = 4'b10xx; cin = 1'bx; #10; // F = shr A
-        sel = 4'b11xx; cin = 1'bx; #10; // F = shl A
+        sel = 4'b1000; cin = 1'bx; #10; // F = shr A
+        sel = 4'b1001; cin = 1'bx; #10; // F = shl A
         $finish;
     end
 endmodule
