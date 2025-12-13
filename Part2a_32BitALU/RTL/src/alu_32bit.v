@@ -44,8 +44,8 @@ module alu_32bit (
     alu_1bit u_alu_30 (.a_i(a_i[30]), .b_i(b_i[30]), .cin_i(carry[30]), .sel_i(sel_i), .f_o(ripple_result[30]), .cout_o(carry[31]));
     alu_1bit u_alu_31 (.a_i(a_i[31]), .b_i(b_i[31]), .cin_i(carry[31]), .sel_i(sel_i), .f_o(ripple_result[31]), .cout_o(carry[32]));
 
-    wire [31:0] shift_right_1 = {1'b0, a_i[31:1]};
-    wire [31:0] shift_left_1  = {a_i[30:0], 1'b0};
+    wire [31:0] shift_right_1 = a_i >> 1;
+    wire [31:0] shift_left_1  = a_i << 1;
 
     assign f_o = (sel_i[3:2] == 2'b10) ? shift_right_1 :
                  (sel_i[3:2] == 2'b11) ? shift_left_1  :
