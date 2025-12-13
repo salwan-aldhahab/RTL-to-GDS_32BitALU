@@ -20,7 +20,7 @@ XRUN_FLAGS      = -64bit \
 
 # --- Top-level Testbench Entity Name ---
 # Match the entity name in tb_counter.v
-TOP_LEVEL       = counter_tb
+TOP_LEVEL       = tb_1bit_alu
 
 # --- Waveform Viewing ---
 # "yes" -> open SimVision during simulation

@@ -1,3 +1,9 @@
-../RTL/src/counter.v
-../RTL/tb/tb_counter.v
-
+../RTL/src/mux4x1.v
+../RTL/src/logic_circuit.v
+../RTL/src/full_adder.v
+../RTL/src/arithmetic_circuit.v
+../RTL/src/alu_1bit.v
+../RTL/tb/tb_1bit_alu.v
+../RTL/tb/tb_mux4x1.v
+../RTL/tb/tb_logic_circuit.v
+../RTL/tb/tb_arithmetic_circuit.v

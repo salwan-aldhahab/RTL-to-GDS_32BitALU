@@ -18,8 +18,8 @@ set_db init_lib_search_path "$GPDK45_DIR/timing"
 # If your design has several HDL files, you have to put them all here.
 # Example:  set rtlFiles [list ../../RTL/src/top.v ../../src/module1.v ../../src/module.v]
 
-set rtlFiles [list ../RTL/src/counter.v]  ;# List of your Verilog source files
-set topModule counter                        ;# Name of your top-level module (here counter.v)
+set rtlFiles [list ../RTL/src/alu_1bit.v ../RTL/src/arithmetic_circuit.v ../RTL/src/full_adder.v ../RTL/src/logic_circuit.v ../RTL/src/mux4x1.v]  ;# List of your Verilog source files
+set topModule alu_1bit                        ;# Name of your top-level module (here counter.v)
 
 # --- Synthesis Run Settings ---
 set runName genus_$topModule                 ;# Base name for output files
@@ -33,7 +33,7 @@ set runName genus_$topModule                 ;# Base name for output files
 
 
 # --- Clock and Timing Constraints ---
-set clockFrequency 150.0                     ;# Clock frequency in MHz
+set clockFrequency 1                     ;# Clock frequency in MHz
 set clockName clk                            ;# Name of your clock signal (in the Verilog code)
 set inputSetupTime 10                        ;# Input setup time (ps)
 set outputDelayTime 30                       ;# Output delay time (ps)
