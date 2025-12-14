@@ -1,0 +1,6 @@
+#!/bin/sh -f
+#--------------------------------------------------------------------------------------
+# THE RUN FILE created by Cadence Extraction Quantus UI Version 22.1.1-p041
+#--------------------------------------------------------------------------------------
+
+qrc  -log_file /eecs/home/namavar/EECS4612/LVS/qrc.LVS1.log -cmd /eecs/home/namavar/EECS4612/LVS/qrc.LVS1.ccl 
