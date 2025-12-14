@@ -12,9 +12,9 @@ module arithmetic_circuit (
     assign not_b = ~b_i;
 
     mux4x1 u_mux4x1 (
-        .a  (b_i),
-        .b  (not_b),
-        .c  (1'b0),
+        .a  (1'b0),
+        .b  (b_i),
+        .c  (not_b),
         .d  (1'b1),
         .sel(sel_i),
         .y  (mux_b_o)
