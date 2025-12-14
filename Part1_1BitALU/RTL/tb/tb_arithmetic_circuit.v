@@ -19,11 +19,11 @@ arithmetic_circuit uut (
 initial begin
     a = 1'b0; b = 1'b0; cin = 1'b0;
 
-    sel = 2'b00; cin = 1'b0; #5; // A + B
+    sel = 2'b00; cin = 1'b0; #5; // A + 0
     sel = 2'b00; cin = 1'b1; #5;
-    sel = 2'b01; cin = 1'b0; #5; // A + B'
+    sel = 2'b01; cin = 1'b0; #5; // A + B
     sel = 2'b01; cin = 1'b1; #5;
-    sel = 2'b10; cin = 1'b0; #5; // A + 0
+    sel = 2'b10; cin = 1'b0; #5; // A + B'
     sel = 2'b11; cin = 1'b1; #5; // A + 1
 
     a = 1'b1; b = 1'b0; cin = 1'b0;
