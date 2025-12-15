@@ -1,0 +1,23 @@
+;----------------------------------------------------------------------------
+; @(#)$CDS: assura version av4.1:Production:dfII6.1.8-64b:IC6.1.8-64b.500.17 03/26/21 09:51 (sjfhw780) $
+; sub-version 4.1_USR6_HF11
+;----------------------------------------------------------------------------
+
+
+;----------------------------------------------------------------------------
+; avParameter Section
+; Created by the Assura UI
+;----------------------------------------------------------------------------
+
+avParameters(
+  ?inputLayout ( "df2" "ALU_32Bit_PnR" )
+  ?cellName "alu_32bit"
+  ?viewName "layout"
+  ?technology "gpdk045_av"
+  ?techLib "./assura_tech.lib"
+  ?avrpt t
+  ?dbuPerUU 2000.0
+  ?flagNon45 t
+  ?flagOffGrid (0.005 1.0)
+  ?joinPins top
+)

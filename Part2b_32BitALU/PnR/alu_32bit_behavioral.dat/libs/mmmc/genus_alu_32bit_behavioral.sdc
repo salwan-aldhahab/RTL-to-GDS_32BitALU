@@ -1,0 +1,1 @@
+/eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part2b_32BitALU/Synthesis/netlist/genus_alu_32bit_behavioral.sdc

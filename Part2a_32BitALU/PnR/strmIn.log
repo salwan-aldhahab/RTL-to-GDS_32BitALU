@@ -1,0 +1,76 @@
+********************************************************************************
+Product   : Virtuoso(R) XStream In
+Program   : @(#)$CDS: strmin version 6.1.8-64b 05/03/2023 09:40 (sjfhw317) $
+          : sub-version  IC6.1.8-64b.500.32 
+Started at: 14-Dec-2025  12:33:13
+User Name : salwan99
+Host Name : ruby
+Directory : /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part2a_32BitALU/PnR
+CADENCE Design Systems, Inc.
+********************************************************************************
+Info: Cellview Rev Num:99,  Tech Rev Num:59
+
+WARNING (XSTRM-75): Target library 'ALU_32Bit_PnR' is attached to the technology library 'gpdk045'. Therefore, the technology file is opened in read-only mode. All the undefined layer-purpose pairs will be dropped.
+WARNING (XSTRM-107): Existing cells in the target library will be overwritten if the cell names in the Stream file and the target library are the same. To prevent this, set the '-writeMode' option to 'noOverwrite'.
+INFO (XSTRM-217): Reading the layer map file, /CMC/kits/cadence/GPDK045/gpdk045_v_6_0/gpdk045/gpdk045.layermap
+INFO (XSTRM-163): You have not used the '-viaMap' option. If a viaMap file, corresponding technology file or technology library exist, then use the '-viaMap' option for creating oaVia instances in the Streamed-In library. Using the '-viaMap' option improves performance and VM usage of applications using the Streamed-In design.
+
+Summary of Options:
+	library				ALU_32Bit_PnR
+	strmFile			/eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part2a_32BitALU/PnR/gds/alu_32bit.gds
+	logFile				strmIn.log
+	view				layout
+	case				Preserve
+	layerMap			/CMC/kits/cadence/GPDK045/gpdk045_v_6_0/gpdk045/gpdk045.layermap
+	propSeparator			,
+
+INFO (XSTRM-220): 1. Translating STRUCTURE ADDFX1 as cellView ALU_32Bit_PnR/ADDFX1/layout.
+INFO (XSTRM-220): 2. Translating STRUCTURE MX2XL as cellView ALU_32Bit_PnR/MX2XL/layout.
+INFO (XSTRM-220): 3. Translating STRUCTURE OR2X1 as cellView ALU_32Bit_PnR/OR2X1/layout.
+INFO (XSTRM-220): 4. Translating STRUCTURE OAI31X1 as cellView ALU_32Bit_PnR/OAI31X1/layout.
+INFO (XSTRM-220): 5. Translating STRUCTURE AOI222X1 as cellView ALU_32Bit_PnR/AOI222X1/layout.
+INFO (XSTRM-220): 6. Translating STRUCTURE OAI211X1 as cellView ALU_32Bit_PnR/OAI211X1/layout.
+INFO (XSTRM-220): 7. Translating STRUCTURE AOI32X1 as cellView ALU_32Bit_PnR/AOI32X1/layout.
+INFO (XSTRM-220): 8. Translating STRUCTURE OAI2BB1X1 as cellView ALU_32Bit_PnR/OAI2BB1X1/layout.
+INFO (XSTRM-220): 9. Translating STRUCTURE INVX2 as cellView ALU_32Bit_PnR/INVX2/layout.
+INFO (XSTRM-220): 10. Translating STRUCTURE NAND2X1 as cellView ALU_32Bit_PnR/NAND2X1/layout.
+INFO (XSTRM-220): 11. Translating STRUCTURE NAND2XL as cellView ALU_32Bit_PnR/NAND2XL/layout.
+INFO (XSTRM-220): 12. Translating STRUCTURE NOR2BX1 as cellView ALU_32Bit_PnR/NOR2BX1/layout.
+INFO (XSTRM-220): 13. Translating STRUCTURE AOI22X1 as cellView ALU_32Bit_PnR/AOI22X1/layout.
+INFO (XSTRM-220): 14. Translating STRUCTURE NAND3XL as cellView ALU_32Bit_PnR/NAND3XL/layout.
+INFO (XSTRM-220): 15. Translating STRUCTURE AO22XL as cellView ALU_32Bit_PnR/AO22XL/layout.
+INFO (XSTRM-220): 16. Translating STRUCTURE OR2X2 as cellView ALU_32Bit_PnR/OR2X2/layout.
+INFO (XSTRM-220): 17. Translating STRUCTURE OA21X2 as cellView ALU_32Bit_PnR/OA21X2/layout.
+INFO (XSTRM-220): 18. Translating STRUCTURE AND2X2 as cellView ALU_32Bit_PnR/AND2X2/layout.
+INFO (XSTRM-220): 19. Translating STRUCTURE CLKAND2X8 as cellView ALU_32Bit_PnR/CLKAND2X8/layout.
+INFO (XSTRM-220): 20. Translating STRUCTURE AND2X1 as cellView ALU_32Bit_PnR/AND2X1/layout.
+INFO (XSTRM-220): 21. Translating STRUCTURE INVXL as cellView ALU_32Bit_PnR/INVXL/layout.
+INFO (XSTRM-220): 22. Translating STRUCTURE INVX1 as cellView ALU_32Bit_PnR/INVX1/layout.
+INFO (XSTRM-220): 23. Translating STRUCTURE NAND2X4 as cellView ALU_32Bit_PnR/NAND2X4/layout.
+INFO (XSTRM-220): 24. Translating STRUCTURE AO21X1 as cellView ALU_32Bit_PnR/AO21X1/layout.
+INFO (XSTRM-220): 25. Translating STRUCTURE FILL16 as cellView ALU_32Bit_PnR/FILL16/layout.
+INFO (XSTRM-220): 26. Translating STRUCTURE FILL8 as cellView ALU_32Bit_PnR/FILL8/layout.
+INFO (XSTRM-220): 27. Translating STRUCTURE FILL2 as cellView ALU_32Bit_PnR/FILL2/layout.
+INFO (XSTRM-220): 28. Translating STRUCTURE FILL1 as cellView ALU_32Bit_PnR/FILL1/layout.
+INFO (XSTRM-220): 29. Translating STRUCTURE FILL4 as cellView ALU_32Bit_PnR/FILL4/layout.
+INFO (XSTRM-220): 30. Translating STRUCTURE FILL32 as cellView ALU_32Bit_PnR/FILL32/layout.
+INFO (XSTRM-220): 31. Translating STRUCTURE alu_32bit as cellView ALU_32Bit_PnR/alu_32bit/layout.
+WARNING (XSTRM-36): The objects in the stream layer-datatype '59:0' are ignored. This is because the stream layer-datatype pair is either not specified in the layer map file or the entry is invalid and was therefore ignored. Specify the stream layer-datatype pair in the layer map file or correct the wrong entry and try again.
+
+Summary of Objects Translated:
+	Instances:                              891
+	CustomVias:                             0
+	StandardVias:                           2264
+	CdsGenVias:                             0
+	Arrays:                                 0
+	Polygons:                               215
+	Paths:                                  3454
+	PathSegs:                               0
+	Rectangles:                             1844
+	Text:                                   440
+	Node:                                   0
+	Line:                                   0
+	Cells:                                  31
+
+Elapsed Time: 0.6s   User Time: 0.1s   CPU Time: 0.1s   Peak VM: 13372KB  CPUs Used: 2
+INFO (XSTRM-234): Translation completed. '0' error(s) and '3' warning(s) found.

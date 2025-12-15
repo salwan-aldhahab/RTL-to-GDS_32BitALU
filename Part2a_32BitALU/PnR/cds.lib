@@ -1,0 +1,5 @@
+INCLUDE tech.lib
+DEFINE ALU_32Bit_PnR /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part2a_32BitALU/PnR/ALU_32Bit_PnR
+DEFINE avTech /CMC/tools/cadence/ASSURA04.16.111-618_lnx86/tools.lnx86/assura/etc/avtech/avTech
+
+DEFINE padframe /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/padFrame/ALU_DESIGN/Final_Project

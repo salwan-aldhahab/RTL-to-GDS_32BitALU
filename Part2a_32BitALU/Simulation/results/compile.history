@@ -1,0 +1,9 @@
+s1(13Dec2025:12:53:08):  xrun -64bit -v93 -relax -access +rwc -compile -f filelist.f -logfile .//results/compile.log 
+s2(13Dec2025:12:53:08):  xrun -64bit -v93 -relax -access +rwc -elaborate -top tb_32bit_alu -cdslib cds.lib -logfile .//results/elaborate.log 
+s3(13Dec2025:12:53:46):  xrun -64bit -v93 -relax -access +rwc -compile -f filelist.f -logfile .//results/compile.log 
+s4(13Dec2025:12:53:46):  xrun -64bit -v93 -relax -access +rwc -elaborate -top tb_32bit_alu -cdslib cds.lib -logfile .//results/elaborate.log 
+s5(13Dec2025:13:16:34):  xrun -64bit -v93 -relax -access +rwc -compile -f filelist.f -logfile .//results/compile.log 
+s6(13Dec2025:13:16:35):  xrun -64bit -v93 -relax -access +rwc -elaborate -top tb_32bit_alu -cdslib cds.lib -logfile .//results/elaborate.log 
+s7(13Dec2025:13:33:53):  xrun -64bit -v93 -relax -access +rwc -compile -f filelist.f -logfile .//results/compile.log 
+s8(13Dec2025:13:33:54):  xrun -64bit -v93 -relax -access +rwc -elaborate -top tb_32bit_alu -cdslib cds.lib -logfile .//results/elaborate.log 
+s9(13Dec2025:13:37:21):  xrun -64bit -v93 -relax -access +rwc -compile -f filelist.f -logfile .//results/compile.log 

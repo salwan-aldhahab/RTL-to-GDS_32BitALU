@@ -1,0 +1,27 @@
+//
+// File created by:  xrun
+// Do not modify this file
+//
+-INPUT
+./scripts/run.tcl
+-gui
+-MESSAGES
++EMGRLOG
+.//results/simulate.log
+-XLSTIME
+1765755236
+-XLKEEP
+-XLMODE
+./xcelium.d/run.lnx8664.23.09.d
+-RUNMODE
+-CDSLIB
+./xcelium.d/run.lnx8664.23.09.d/cds.lib
+-HDLVAR
+./xcelium.d/run.lnx8664.23.09.d/hdl.var
+-XLNAME
+xrun
+-XLVERSION
+"TOOL:	xrun(64)	23.09-s006"
+-CMDPSIM
+-XLNAME
+./xcelium.d/run.lnx8664.23.09.d/ruby_775c7998-6452-4a4c-ba5b-008002f09765

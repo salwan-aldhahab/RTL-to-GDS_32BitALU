@@ -1,0 +1,268 @@
+
+***** Begin Label Report *****
+
+ Label in cell 'BONDPAD52 layout giolib045':
+  info: Assign pin label "PAD" at (30.0000, 79.2900) to layer `metal1_conn'.
+
+ Label in cell 'ESDpTabVSSIOR layout giolib045':
+  info: Assign pin label "VSSIOR" at (0.5000, 8.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 22.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 37.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 51.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 8.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 22.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 37.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 51.5000) to layer `metal4_conn'.
+
+ Label in cell 'ESDnTapVDDIOR layout giolib045':
+  info: Assign pin label "VDDIOR" at (0.5000, 11.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 26.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 40.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 55.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 11.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 26.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 40.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 55.0000) to layer `metal4_conn'.
+
+ Label in cell 'pmos2v layout gpdk045 fingers=2 fw=2.5e-06 leftAbut=5 in1=7cM29':
+  info: Assign pin label "G" at (0.0750, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.4250, -0.0750) to layer `poly_conn'.
+  info: Nets C4 and C3 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.4250, -0.0750) renamed G;1.
+  info: Assign pin label "G" at (0.0750, 2.5750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.4250, 2.5750) to layer `poly_conn'.
+  info: Nets C4 and C3 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.4250, 2.5750) renamed G;1.
+  info: Assign pin label "D" at (0.2500, 1.2500) to layer `metal1_conn'.
+  info: Assign pin label "S" at (0.5900, 1.2500) to layer `metal1_conn'.
+
+ Label in cell 'pmos2v layout gpdk045 fingers=2 fw=2.5e-06 leftAbut=3 rightAbut=3 in1=7cM28':
+  info: Assign pin label "G" at (0.0750, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.4250, -0.0750) to layer `poly_conn'.
+  info: Nets C5 and C4 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.4250, -0.0750) renamed G;1.
+  info: Assign pin label "G" at (0.0750, 2.5750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.4250, 2.5750) to layer `poly_conn'.
+  info: Nets C5 and C4 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.4250, 2.5750) renamed G;1.
+  info: Assign pin label "S" at (-0.1000, 1.2500) to layer `metal1_conn'.
+  info: Assign pin label "D" at (0.2500, 1.2500) to layer `metal1_conn'.
+  info: Assign pin label "S" at (0.6000, 1.2500) to layer `metal1_conn'.
+  info: Nets C3 and C1 are associated with the same label "S". They must be joined.
+        Net label "S" at (0.6000, 1.2500) renamed S;1.
+
+ Label in cell 'pmos2v layout gpdk045 fingers=2 fw=2e-06 leftAbut=5 in1=7cM12':
+  info: Assign pin label "G" at (0.0750, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.4250, -0.0750) to layer `poly_conn'.
+  info: Nets C4 and C3 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.4250, -0.0750) renamed G;1.
+  info: Assign pin label "G" at (0.0750, 2.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.4250, 2.0750) to layer `poly_conn'.
+  info: Nets C4 and C3 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.4250, 2.0750) renamed G;1.
+  info: Assign pin label "D" at (0.2500, 1.0000) to layer `metal1_conn'.
+  info: Assign pin label "S" at (0.5900, 1.0000) to layer `metal1_conn'.
+
+ Label in cell 'pmos1v layout gpdk045 connectGates="Bottom" fw=1e-06 in1=7cPM3':
+  info: Assign pin label "G" at (0.0225, 1.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.0200, -0.1000) to layer `metal1_conn'.
+  info: Assign pin label "S" at (-0.0800, 0.5000) to layer `metal1_conn'.
+  info: Assign pin label "D" at (0.1250, 0.5000) to layer `metal1_conn'.
+
+ Label in cell 'pmos1v layout gpdk045 fingers=2 fw=2e-06 rightAbut=3 in1=7cPM4':
+  info: Assign pin label "G" at (0.0225, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.2275, -0.0750) to layer `poly_conn'.
+  info: Nets C5 and C4 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.2275, -0.0750) renamed G;1.
+  info: Assign pin label "G" at (0.0225, 2.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.2275, 2.0750) to layer `poly_conn'.
+  info: Nets C5 and C4 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.2275, 2.0750) renamed G;1.
+  info: Assign pin label "S" at (-0.0800, 1.0000) to layer `metal1_conn'.
+  info: Assign pin label "D" at (0.1250, 1.0000) to layer `metal1_conn'.
+  info: Assign pin label "S" at (0.3300, 1.0000) to layer `metal1_conn'.
+  info: Nets C3 and C1 are associated with the same label "S". They must be joined.
+        Net label "S" at (0.3300, 1.0000) renamed S;1.
+
+ Label in cell 'pmos1v layout gpdk045 fingers=2 fw=2e-06 leftAbut=5 in1=7cPM3':
+  info: Assign pin label "G" at (0.0225, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.2275, -0.0750) to layer `poly_conn'.
+  info: Nets C4 and C3 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.2275, -0.0750) renamed G;1.
+  info: Assign pin label "G" at (0.0225, 2.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.2275, 2.0750) to layer `poly_conn'.
+  info: Nets C4 and C3 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.2275, 2.0750) renamed G;1.
+  info: Assign pin label "D" at (0.1250, 1.0000) to layer `metal1_conn'.
+  info: Assign pin label "S" at (0.3300, 1.0000) to layer `metal1_conn'.
+
+ Label in cell 'nmos2v layout gpdk045 fw=5e-07 leftAbut=3 in1=7cM15':
+  info: Assign pin label "G" at (0.0750, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.0750, 0.5750) to layer `poly_conn'.
+  info: Assign pin label "S" at (-0.1000, 0.2500) to layer `metal1_conn'.
+  info: Assign pin label "D" at (0.2400, 0.2500) to layer `metal1_conn'.
+
+ Label in cell 'nmos1v layout gpdk045 fw=5e-07 leftAbut=3 in1=7cNM2':
+  info: Assign pin label "G" at (0.0225, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.0225, 0.5750) to layer `poly_conn'.
+  info: Assign pin label "S" at (-0.0800, 0.2500) to layer `metal1_conn'.
+  info: Assign pin label "D" at (0.1250, 0.2500) to layer `metal1_conn'.
+
+ Label in cell 'nmos1v layout gpdk045 fingers=2 fw=2.5e-06 leftAbut=5 in1=7cNM5':
+  info: Assign pin label "G" at (0.0225, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.2275, -0.0750) to layer `poly_conn'.
+  info: Nets C4 and C3 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.2275, -0.0750) renamed G;1.
+  info: Assign pin label "G" at (0.0225, 2.5750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.2275, 2.5750) to layer `poly_conn'.
+  info: Nets C4 and C3 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.2275, 2.5750) renamed G;1.
+  info: Assign pin label "D" at (0.1250, 1.2500) to layer `metal1_conn'.
+  info: Assign pin label "S" at (0.3300, 1.2500) to layer `metal1_conn'.
+
+ Label in cell 'nmos1v layout gpdk045 fingers=2 fw=2.5e-06 rightAbut=3 in1=7cNM6':
+  info: Assign pin label "G" at (0.0225, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.2275, -0.0750) to layer `poly_conn'.
+  info: Nets C5 and C4 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.2275, -0.0750) renamed G;1.
+  info: Assign pin label "G" at (0.0225, 2.5750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.2275, 2.5750) to layer `poly_conn'.
+  info: Nets C5 and C4 are associated with the same label "G". They must be joined.
+        Net label "G" at (0.2275, 2.5750) renamed G;1.
+  info: Assign pin label "S" at (-0.0800, 1.2500) to layer `metal1_conn'.
+  info: Assign pin label "D" at (0.1250, 1.2500) to layer `metal1_conn'.
+  info: Assign pin label "S" at (0.3300, 1.2500) to layer `metal1_conn'.
+  info: Nets C3 and C1 are associated with the same label "S". They must be joined.
+        Net label "S" at (0.3300, 1.2500) renamed S;1.
+
+ Label in cell 'nmos1v layout gpdk045 fw=2e-06 leftAbut=5 in1=7cNM4':
+  info: Assign pin label "G" at (0.0225, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.0225, 2.0750) to layer `poly_conn'.
+  info: Assign pin label "D" at (0.1250, 1.0000) to layer `metal1_conn'.
+
+ Label in cell 'nmos1v layout gpdk045 fw=2e-06 leftAbut=3 in1=7cNM1':
+  info: Assign pin label "G" at (0.0225, -0.0750) to layer `poly_conn'.
+  info: Assign pin label "G" at (0.0225, 2.0750) to layer `poly_conn'.
+  info: Assign pin label "S" at (-0.0800, 1.0000) to layer `metal1_conn'.
+  info: Assign pin label "D" at (0.1250, 1.0000) to layer `metal1_conn'.
+
+ Label in cell 'padIORINGCORNER layout giolib045':
+  info: Assign pin label "VDDIOR" at (11.5000, 159.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (159.5000, 11.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (26.0000, 159.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (159.5000, 26.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (40.5000, 159.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (159.5000, 40.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (55.0000, 159.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (159.5000, 55.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (71.0550, 159.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (159.5000, 71.0550) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (84.8850, 159.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (159.5000, 84.8850) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (101.0000, 159.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (159.5000, 101.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (115.5000, 159.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (159.5000, 115.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (130.0000, 159.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (159.5000, 130.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (144.5000, 159.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (159.5000, 144.5000) to layer `metal4_conn'.
+
+ Label in cell 'PADVSS layout giolib045':
+  info: Assign pin label "VDDIOR" at (0.5000, 11.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 26.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 40.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 55.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 11.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (0.5000, 71.0550) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (0.5000, 84.8850) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 26.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 40.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 101.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 55.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 115.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 130.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (59.5000, 71.0550) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (59.5000, 84.8850) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 144.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 101.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 115.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 130.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 144.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (30.0000, 158.3200) to layer `metal3_conn'.
+  info: Assign pin label "VSS" at (30.0000, 158.3200) to layer `metal2_conn'.
+
+ Label in cell 'PADVDD layout giolib045':
+  info: Assign pin label "VDDIOR" at (0.5000, 11.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 26.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 40.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 55.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 11.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (0.5000, 71.0550) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (0.5000, 84.8850) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 26.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 40.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 101.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 55.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 115.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 130.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (59.5000, 71.0550) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (59.5000, 84.8850) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 144.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 101.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 115.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 130.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 144.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (30.0000, 158.3200) to layer `metal3_conn'.
+  info: Assign pin label "VDD" at (30.0000, 158.3200) to layer `metal2_conn'.
+
+ Label in cell 'PADDO layout giolib045':
+  info: Assign pin label "PAD" at (30.0000, -78.5925) to layer `metal11_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 11.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 26.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 40.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 55.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 11.5000) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (0.5000, 71.0550) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (0.5000, 84.8850) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 26.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 40.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 101.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 55.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 115.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 130.0000) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (59.5000, 71.0550) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (59.5000, 84.8850) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 144.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 101.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 115.5000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 130.0000) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 144.5000) to layer `metal4_conn'.
+  info: Assign pin label "A" at (30.0000, 159.6375) to layer `metal3_conn'.
+
+ Label in cell 'PADDI layout giolib045':
+  info: Assign pin label "PAD" at (30.0000, -79.2950) to layer `metal11_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 11.4950) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 25.9950) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 40.4950) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (0.5000, 54.9950) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 11.4950) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (0.5000, 71.0525) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (0.5000, 84.8850) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 25.9950) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 40.4950) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 100.9950) to layer `metal4_conn'.
+  info: Assign pin label "VDDIOR" at (59.5000, 54.9950) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 115.4950) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 129.9950) to layer `metal4_conn'.
+  info: Assign pin label "VDD" at (59.5000, 71.0525) to layer `metal4_conn'.
+  info: Assign pin label "VSS" at (59.5000, 84.8850) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (0.5000, 144.4950) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 100.9950) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 115.4950) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 129.9950) to layer `metal4_conn'.
+  info: Assign pin label "VSSIOR" at (59.5000, 144.4950) to layer `metal4_conn'.
+  info: Assign pin label "Y" at (28.0525, 159.6375) to layer `metal3_conn'.
+
+***** End of Label Report *****
+

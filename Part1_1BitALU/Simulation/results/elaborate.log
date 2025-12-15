@@ -1,0 +1,30 @@
+xrun(64): 23.09-s006: (c) Copyright 1995-2024 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	23.09-s006: Started on Dec 14, 2025 at 21:02:06 EST
+xrun
+	-64bit
+	-v93
+	-relax
+	-access +rwc
+	-elaborate
+	-top tb_1bit_alu
+	-cdslib cds.lib
+	-logfile .//results/elaborate.log
+	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
+	Top level design units:
+		tb_1bit_alu
+	Building instance overlay tables: .................... Done
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		              Instances  Unique
+		Modules:              8       6
+		Registers:            7       5
+		Scalar wires:        17       -
+		Expanded wires:       4       1
+		Always blocks:        3       1
+		Initial blocks:       1       1
+		Cont. assignments:    1      10
+		Pseudo assignments:   5       -
+	Writing initial simulation snapshot: worklib.tb_1bit_alu:v
+TOOL:	xrun(64)	23.09-s006: Exiting on Dec 14, 2025 at 21:02:06 EST  (total: 00:00:00)

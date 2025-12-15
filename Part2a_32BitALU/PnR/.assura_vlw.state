@@ -1,0 +1,58 @@
+;----------------------------------------------------------------------------
+; @(#)$CDS: assura version av4.1:Production:dfII6.1.8-64b:IC6.1.8-64b.500.17 03/26/21 09:51 (sjfhw780) $
+; sub-version 4.1_USR6_HF11
+;----------------------------------------------------------------------------
+
+
+;----------------------------------------------------------------------------
+; Assura VLW saved state
+;----------------------------------------------------------------------------
+
+vuiLayerListOrder  =  "Alphabetical"
+vuiLayerList  = '(
+		("Bondpad" 248 "Bondpad = geomOr( Bondpad )" 1 14 t "y0 (drawing)" t)
+		("L10595" 2507 "L10595 = geomNodeRelate( ndiff_conn psubstrate conn )" 0 41 t "y1 (drawing)" t)
+		("L12421" 2522 "L12421 = geomNodeRelate( pdiff_conn psubstrate conn )" 0 43 t "y2 (drawing)" t)
+		("L64324" 2500 "L64324 = geomNodeRelate( pdiff_conn Bondpad conn )" 0 40 t "y3 (drawing)" t)
+		("L65219" 2513 "L65219 = geomNodeRelate( pdiff_conn nwell_conn conn )" 0 42 t "y4 (drawing)" t)
+		("L80382" 2494 "L80382 = geomNodeRelate( ndiff_conn Bondpad conn )" 0 39 t "y5 (drawing)" t)
+		("Via1" 338 "Via1 = geomOr( Via1 )" 1 38 t "y6 (drawing)" t)
+		("Via2" 340 "Via2 = geomOr( Via2 )" 1 6 t "y7 (drawing)" t)
+		("Via3" 342 "Via3 = geomOr( Via3 )" 1 7 t "y8 (drawing)" t)
+		("Via4" 344 "Via4 = geomOr( Via4 )" 1 8 t "y9 (drawing)" t)
+		("Via5" 346 "Via5 = geomOr( Via5 )" 1 9 t "y0 (drawing)" t)
+		("Via6" 348 "Via6 = geomOr( Via6 )" 1 10 t "y1 (drawing)" t)
+		("Via7" 350 "Via7 = geomOr( Via7 )" 1 11 t "y2 (drawing)" t)
+		("Via8" 352 "Via8 = geomOr( Via8 )" 1 12 t "y3 (drawing)" t)
+		("Via9" 354 "Via9 = geomOr( Via9 )" 1 13 t "y4 (drawing)" t)
+		("bp_tap" 6188 "bp_tap = groupVias(  via(bp_tap) conn1(Bondpad) conn2(metal11_conn) )" 1 31 t "y5 (drawing)" t)
+		("cont_cluster_lt_pt1" 382 "T?381 = drcCluster( Cont sepCluster < 0.1 ( 2 < count sep < 0.1 outCluster( c..." 0 44 t "y6 (drawing)" t)
+		("cont_ndiff" 6191 "cont_ndiff = groupVias(  via(cont_ndiff) conn1(metal1_conn) conn2(npn_emit nd..." 1 34 t "y7 (drawing)" t)
+		("cont_pdiff" 6187 "cont_pdiff = groupVias(  via(cont_pdiff) conn1(metal1_conn) conn2(pdiff_conn) )" 1 30 t "y8 (drawing)" t)
+		("cont_poly" 6189 "cont_poly = groupVias(  via(cont_poly) conn1(metal1_conn) conn2(poly_conn) )" 1 32 t "y9 (drawing)" t)
+		("metal10_conn" 539 "metal10_conn = geomAndNot( Metal10 L17074 )" 0 33 t "y0 (drawing)" t)
+		("metal11_conn" 541 "metal11_conn = geomAndNot( Metal11 L86607 )" 0 35 t "y1 (drawing)" t)
+		("metal11_conn_pintext" 79 "metal11_conn_pintext = pinText( \"Metal11\" )" 0 4 t "y2 (drawing)" t)
+		("metal1_conn" 386 "metal1_conn = geomAndNot( Metal1 M1Resdum )" 0 16 t "y3 (drawing)" t)
+		("metal1_conn_pintext" 59 "metal1_conn_pintext = pinText( \"Metal1\" )" 0 0 t "y4 (drawing)" t)
+		("metal2_conn" 387 "metal2_conn = geomAndNot( Metal2 M2Resdum )" 0 17 t "y5 (drawing)" t)
+		("metal2_conn_pintext" 61 "metal2_conn_pintext = pinText( \"Metal2\" )" 0 1 t "y6 (drawing)" t)
+		("metal3_conn" 388 "metal3_conn = geomAndNot( Metal3 M3Resdum )" 0 18 t "y7 (drawing)" t)
+		("metal3_conn_pintext" 63 "metal3_conn_pintext = pinText( \"Metal3\" )" 0 2 t "y8 (drawing)" t)
+		("metal4_conn" 389 "metal4_conn = geomAndNot( Metal4 M4Resdum )" 0 19 t "y9 (drawing)" t)
+		("metal4_conn_pintext" 65 "metal4_conn_pintext = pinText( \"Metal4\" )" 0 3 t "y0 (drawing)" t)
+		("metal5_conn" 390 "metal5_conn = geomAndNot( Metal5 M5Resdum )" 0 20 t "y1 (drawing)" t)
+		("metal6_conn" 391 "metal6_conn = geomAndNot( Metal6 M6Resdum )" 0 21 t "y2 (drawing)" t)
+		("metal7_conn" 392 "metal7_conn = geomAndNot( Metal7 M7Resdum )" 0 22 t "y3 (drawing)" t)
+		("metal8_conn" 393 "metal8_conn = geomAndNot( Metal8 M8Resdum )" 0 23 t "y4 (drawing)" t)
+		("metal9_conn" 394 "metal9_conn = geomAndNot( Metal9 M9Resdum )" 0 24 t "y5 (drawing)" t)
+		("ndiff_conn" 405 "ndiff_conn = geomAndNot( ndiff Resdum )" 0 29 t "y6 (drawing)" t)
+		("ntap" 601 "ntap = geomAndNot( L74405 L28555 )" 0 15 t "y7 (drawing)" t)
+		("nwell_conn" 397 "nwell_conn = geomAndNot( Nwell ResWdum )" 0 25 t "y8 (drawing)" t)
+		("pdiff_conn" 401 "pdiff_conn = geomAndNot( pdiff Resdum )" 0 26 t "y9 (drawing)" t)
+		("poly_conn" 403 "poly_conn = geomAndNot( Poly Resdum )" 0 27 t "y0 (drawing)" t)
+		("poly_conn_pintext" 81 "poly_conn_pintext = pinText( \"Poly\" )" 0 5 t "y1 (drawing)" t)
+		("psubstrate" 857 "psubstrate = geomAndNot( L14174 L7495 )" 0 28 t "y2 (drawing)" t)
+		("ptap" 551 "ptap = geomAndNot( L61994 PNPdummy )" 0 37 t "y3 (drawing)" t)
+		("via10_nocap" 6192 "via10_nocap = groupVias(  via(via10_nocap) conn1(metal11_conn) conn2(metal10_..." 1 36 t "y4 (drawing)" t)
+)

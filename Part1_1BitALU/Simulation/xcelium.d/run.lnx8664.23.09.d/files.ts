@@ -1,0 +1,10 @@
+1735766698 /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part1_1BitALU/Simulation/cds.lib
+1765518254 /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part1_1BitALU/RTL/src/mux4x1.v
+1765518254 /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part1_1BitALU/RTL/src/logic_circuit.v
+1765518254 /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part1_1BitALU/RTL/src/full_adder.v
+1765755216 /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part1_1BitALU/RTL/src/arithmetic_circuit.v
+1765755216 /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part1_1BitALU/RTL/tb/tb_1bit_alu.v
+1765518254 /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part1_1BitALU/RTL/src/alu_1bit.v
+1765518254 /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part1_1BitALU/RTL/tb/tb_mux4x1.v
+1765518254 /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part1_1BitALU/RTL/tb/tb_logic_circuit.v
+1765755216 /eecs/home/salwan99/Desktop/VLSI4612/RTL-to-GDS_32BitALU/Part1_1BitALU/RTL/tb/tb_arithmetic_circuit.v

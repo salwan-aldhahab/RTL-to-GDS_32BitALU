@@ -1,0 +1,20 @@
+xrun(64): 23.09-s006: (c) Copyright 1995-2024 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	23.09-s006: Started on Dec 14, 2025 at 21:02:05 EST
+xrun
+	-64bit
+	-v93
+	-relax
+	-access +rwc
+	-compile
+	-f filelist.f
+		../RTL/src/mux4x1.v
+		../RTL/src/logic_circuit.v
+		../RTL/src/full_adder.v
+		../RTL/src/arithmetic_circuit.v
+		../RTL/src/alu_1bit.v
+		../RTL/tb/tb_1bit_alu.v
+		../RTL/tb/tb_mux4x1.v
+		../RTL/tb/tb_logic_circuit.v
+		../RTL/tb/tb_arithmetic_circuit.v
+	-logfile .//results/compile.log
+TOOL:	xrun(64)	23.09-s006: Exiting on Dec 14, 2025 at 21:02:06 EST  (total: 00:00:01)

@@ -1,0 +1,1 @@
+("alu_32bit:/\talu_32bit ALU_32Bit_PnR layout" (("open" (nil hierarchy "/{ALU_32Bit_PnR alu_32bit layout }:a"))) (((-3294.039 -1263.954) (3305.699 1328.123)) "a" "Layout" 3))("padframe:/\tpadframe padframe layout" (("open" (nil hierarchy "/{padframe padframe layout }:a"))) (((-1128.674 330.9295) (7424.689 3690.3)) "a" "Layout" 5))

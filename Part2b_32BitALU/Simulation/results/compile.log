@@ -1,0 +1,16 @@
+xrun(64): 23.09-s006: (c) Copyright 1995-2024 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	23.09-s006: Started on Dec 13, 2025 at 14:09:22 EST
+xrun
+	-64bit
+	-v93
+	-relax
+	-access +rwc
+	-compile
+	-f filelist.f
+		../RTL/src/alu_32bit_behavioral.v
+		../RTL/tb/tb_32bit_alu_behavioral.v
+	-logfile .//results/compile.log
+file: ../RTL/tb/tb_32bit_alu_behavioral.v
+	module worklib.tb_32bit_alu_behavioral:v
+		errors: 0, warnings: 0
+TOOL:	xrun(64)	23.09-s006: Exiting on Dec 13, 2025 at 14:09:22 EST  (total: 00:00:00)

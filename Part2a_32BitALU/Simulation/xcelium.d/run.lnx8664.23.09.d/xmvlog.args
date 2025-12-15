@@ -1,0 +1,24 @@
+//
+// File created by:  xrun
+// Do not modify this file
+//
+-XLMODE
+./xcelium.d/run.lnx8664.23.09.d
+-RUNMODE
+../RTL/src/mux4x1.v
+../RTL/src/logic_circuit.v
+../RTL/src/full_adder.v
+../RTL/src/arithmetic_circuit.v
+../RTL/src/alu_1bit.v
+../RTL/src/alu_32bit.v
+../RTL/tb/tb_32bit_alu.v
+-CDSLIB
+./xcelium.d/run.lnx8664.23.09.d/cdsrun.lib
+-HDLVAR
+./xcelium.d/run.lnx8664.23.09.d/hdlrun.var
+-no_analogsolver
+-MESSAGES
+-UPDATE
+-XLLIBSTORE
+./xcelium.d/run.lnx8664.23.09.d/xllibs
+-ALLOWUNBOUND

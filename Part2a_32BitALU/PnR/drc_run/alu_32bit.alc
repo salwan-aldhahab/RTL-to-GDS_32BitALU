@@ -1,0 +1,43 @@
+!<alc> v1 75
+1    2    0 ESDCorePM layout giolib045
+1    1    0 ESDCoreNM layout giolib045
+1   46    0 BONDPAD52 layout giolib045
+1   42    0 ESDpTabVSSIOR layout giolib045
+1   41    0 ESDnTapVDDIOR layout giolib045
+1   39    0 pmos2v layout gpdk045 fingers=2 fw=2.5e-06 leftAbut=5 in1=7cM29
+1   37    0 pmos2v layout gpdk045 fingers=2 fw=2.5e-06 leftAbut=3 rightAbut=3 in1=7cM28
+1   30    0 pmos2v layout gpdk045 fingers=2 fw=2e-06 leftAbut=5 in1=7cM12
+1   28    0 pmos1v layout gpdk045 connectGates="Bottom" fw=1e-06 in1=7cPM3
+1   27    0 pmos1v layout gpdk045 fingers=2 fw=2e-06 rightAbut=3 in1=7cPM4
+1   26    0 pmos1v layout gpdk045 fingers=2 fw=2e-06 leftAbut=5 in1=7cPM3
+1   17    0 nmos2v layout gpdk045 fw=5e-07 leftAbut=3 in1=7cM15
+1   12    0 nmos1v layout gpdk045 fw=5e-07 leftAbut=3 in1=7cNM2
+1   11    0 nmos1v layout gpdk045 fingers=2 fw=2.5e-06 leftAbut=5 in1=7cNM5
+1   10    0 nmos1v layout gpdk045 fingers=2 fw=2.5e-06 rightAbut=3 in1=7cNM6
+1    9    0 nmos1v layout gpdk045 fw=2e-06 leftAbut=5 in1=7cNM4
+1    8    0 nmos1v layout gpdk045 fw=2e-06 leftAbut=3 in1=7cNM1
+1    4    0 ESDCorePMArray layout giolib045
+1    3    0 ESDCoreNMArray layout giolib045
+1   85    0 OR2X1 layout ALU_32Bit_PnR
+1   83    0 OAI2BB1X1 layout ALU_32Bit_PnR
+1   82    0 OAI211X1 layout ALU_32Bit_PnR
+1   80    0 NOR2BX1 layout ALU_32Bit_PnR
+1   76    0 NAND2X1 layout ALU_32Bit_PnR
+1   75    0 MX2XL layout ALU_32Bit_PnR
+1   72    0 INVX1 layout ALU_32Bit_PnR
+1   71    0 FILL8 layout ALU_32Bit_PnR
+1   70    0 FILL4 layout ALU_32Bit_PnR
+1   69    0 FILL32 layout ALU_32Bit_PnR
+1   67    0 FILL16 layout ALU_32Bit_PnR
+1   64    0 AOI32X1 layout ALU_32Bit_PnR
+1   63    0 AOI22X1 layout ALU_32Bit_PnR
+1   60    0 AO21X1 layout ALU_32Bit_PnR
+1   59    0 AND2X2 layout ALU_32Bit_PnR
+1   58    0 AND2X1 layout ALU_32Bit_PnR
+1   57    0 ADDFX1 layout ALU_32Bit_PnR
+1   56    0 padIORINGCORNER layout giolib045
+1   55    0 PADVSS layout giolib045
+1   54    0 PADVDD layout giolib045
+1   53    0 PADDO layout giolib045
+1   52    0 PADDI layout giolib045
+1   88    0 alu_32bit layout ALU_32Bit_PnR
