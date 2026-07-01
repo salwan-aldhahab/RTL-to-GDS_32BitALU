@@ -1,0 +1,271 @@
+\chapter{Architecture of the 1-bit ALU Slice}
+\label{ch:arch}
+
+The whole design rests on one carefully built block: the 1-bit ALU slice.
+This chapter develops that slice bottom-up --- full adder, multiplexer,
+arithmetic unit, logic unit --- and shows how they compose into the
+complete slice, giving the reasoning behind each choice. Every schematic
+here is redrawn as vector art; the corresponding Verilog is listed
+alongside so the figure and the code can be read together.
+
+\section{Structural decomposition}
+The 1-bit slice is partitioned into three cooperating sub-blocks,
+selected by the two halves of \sel{}:
+\begin{itemize}
+  \item an \textbf{arithmetic circuit} that produces the adder result
+        $D_i$ and carry-out, controlled by \code{S1\,S0};
+  \item a \textbf{logic circuit} that produces the bitwise result $E_i$,
+        also controlled by \code{S1\,S0}; and
+  \item an output \textbf{4:1 multiplexer} that selects between $D_i$,
+        $E_i$, and the two shifted versions of $A$, controlled by
+        \code{S3\,S2}.
+\end{itemize}
+\Cref{fig:alu1top} shows the composition. The key architectural decision
+is this two-level select: \code{S3\,S2} picks the \emph{class} of
+operation (arithmetic / logic / shift) at the output mux, while
+\code{S1\,S0} picks the \emph{specific} operation inside the arithmetic
+and logic units. This lets both internal units run in parallel and share
+the same lower select bits, and it is exactly what makes the slice
+replicable --- no bit position needs special-case control.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small]
+  % Arithmetic + logic blocks
+  \node[arith,minimum width=28mm] (ar) at (0,1.4)
+        {1-bit Arithmetic\\ circuit};
+  \node[logic,minimum width=28mm] (lo) at (0,-1.4)
+        {1-bit Logic\\ circuit};
+
+  % Output mux
+  \muxfour{om}{4.4}{2.5}
+
+  % Bundled inputs into the two units
+  \draw[bus] ($(ar.west)+(-2.2,0)$)
+        node[left,buslbl,align=right]{A$_i$, B$_i$,\\ Cin, S1 S0}
+        -- (ar.west);
+  \draw[bus] ($(lo.west)+(-2.2,0)$)
+        node[left,buslbl,align=right]{A$_i$, B$_i$,\\ S1 S0}
+        -- (lo.west);
+
+  % arithmetic -> mux in0, logic -> mux in1
+  \draw[sig] (ar.east) -- ($(ar.east)+(0.7,0)$)
+        |- node[pos=0.9,above,buslbl]{$D_i$} (om-in0);
+  \draw[sig] (lo.east) -- ($(lo.east)+(1.1,0)$)
+        |- node[pos=0.9,above,buslbl]{$E_i$} (om-in1);
+  % shifts into mux
+  \draw[sig] ($(om-in2)+(-1.6,0)$) node[left,buslbl]{shr $A$} -- (om-in2);
+  \draw[sig] ($(om-in3)+(-1.6,0)$) node[left,buslbl]{shl $A$} -- (om-in3);
+  % select
+  \draw[sig] (om-sel) -- ($(om-sel)+(0,-0.6)$) node[below,buslbl]{\code{S3 S2}};
+
+  % output + cout
+  \draw[bus] (om-out) -- ($(om-out)+(1.4,0)$) node[right,buslbl]{$F_i$};
+  \draw[sig] ($(ar.east)+(0,-0.35)$) -- ($(ar.east)+(2.0,-0.35)$)
+        node[right,buslbl]{Cout$_i$};
+\end{tikzpicture}
+\caption{Top-level datapath of the 1-bit ALU slice. \code{S1\,S0} selects
+the function inside the arithmetic and logic units; \code{S3\,S2} selects
+the output class (arithmetic $D_i$, logic $E_i$, shift-right or
+shift-left of $A$) at the output 4:1 multiplexer.}
+\label{fig:alu1top}
+\end{figure}
+
+\lstinputlisting[style=vlog,caption={\texttt{alu\_1bit.v} --- top-level
+1-bit slice.},label={lst:alu1}]{rtl/alu_1bit.v}
+
+Note in \cref{lst:alu1} that the shift inputs to the output mux
+(\code{a\_shr\_1bit}, \code{a\_shl\_1bit}) are derived locally from
+\code{a\_i}. In a single bit this is a placeholder for the inter-slice
+shift wiring that is realised at the 32-bit level (\cref{ch:part2a}).
+
+\section{The 4:1 multiplexer}
+Every selection point in the slice --- inside the arithmetic unit, inside
+the logic unit, and at the output --- is a 4:1 multiplexer. A single
+parameter-free \code{mux4x1} module is therefore written once and reused,
+which is a small but real instance of the reuse principle behind the whole
+design.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small]
+  \muxfour{m}{0}{1.1}
+  \draw[sig] ($(m-in0)+(-1.2,0)$) node[left,buslbl]{$a$ (sel=00)} -- (m-in0);
+  \draw[sig] ($(m-in1)+(-1.2,0)$) node[left,buslbl]{$b$ (sel=01)} -- (m-in1);
+  \draw[sig] ($(m-in2)+(-1.2,0)$) node[left,buslbl]{$c$ (sel=10)} -- (m-in2);
+  \draw[sig] ($(m-in3)+(-1.2,0)$) node[left,buslbl]{$d$ (sel=11)} -- (m-in3);
+  \draw[bus] (m-out) -- ++(1.2,0) node[right,buslbl]{$y$};
+  \draw[sig] (m-sel) -- ++(0,-0.7) node[below,buslbl]{sel[1:0]};
+\end{tikzpicture}
+\caption{The reusable 4:1 multiplexer. The two select bits route one of
+the four data inputs to the output.}
+\label{fig:mux}
+\end{figure}
+
+\lstinputlisting[style=vlog,caption={\texttt{mux4x1.v} --- reused 4:1
+multiplexer.},label={lst:mux}]{rtl/mux4x1.v}
+
+\section{The full adder}
+The arithmetic unit is built around a single-bit full adder implementing
+\begin{align}
+  \text{sum}  &= A \oplus B \oplus C_{in}, \label{eq:fasum}\\
+  \text{cout} &= (A\cdot B) + \bigl(C_{in}\cdot(A\oplus B)\bigr).
+  \label{eq:facout}
+\end{align}
+\Cref{fig:fa} is the gate-level realisation of
+\cref{eq:fasum,eq:facout}: two XOR gates form the sum, and an
+AND-AND-OR network forms the carry, sharing the first XOR ($A\oplus B$)
+between the two halves.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=0.9,transform shape,font=\small]
+  % Level-1 gates
+  \node[xor port]  (x1) at (2.4,3.0) {};
+  \node[and port]  (a1) at (2.4,0.6) {};
+  % Level-2 gates
+  \node[xor port]  (x2) at (5.6,2.6) {};
+  \node[and port]  (a2) at (5.6,1.4) {};
+  \node[or port]   (o1) at (8.2,1.0) {};
+
+  % Primary inputs
+  \node (A) at (0,3.3) {\code{A}};
+  \node (B) at (0,2.5) {\code{B}};
+  \node (C) at (0,1.0) {\code{Cin}};
+
+  % A,B into x1
+  \draw (A) -- (x1.in 1);
+  \draw (B) -- (x1.in 2);
+  % A,B into a1
+  \draw (A) -- ++(0.6,0) |- (a1.in 1);
+  \draw (B) -- ++(0.4,0) |- (a1.in 2);
+  % x1 -> t1 node, fan to x2.in1 and a2.in1
+  \draw (x1.out) -- ++(0.4,0) coordinate (t1);
+  \node[circle,fill,inner sep=1pt] at (t1) {};
+  \draw (t1) |- (x2.in 1);
+  \draw (t1) |- (a2.in 1);
+  % Cin -> x2.in2 and a2.in2
+  \draw (C) -| ($(x2.in 2)+(-0.6,0)$) -- (x2.in 2);
+  \draw (C) -- ++(3.6,0) |- (a2.in 2);
+  % sum output
+  \draw (x2.out) -- ++(0.8,0) node[right]{\code{sum}\,$=D_i$};
+  % carry network
+  \draw (a1.out) -- ++(0.5,0) |- (o1.in 1);
+  \draw (a2.out) -- (o1.in 2);
+  \draw (o1.out) -- ++(0.6,0) node[right]{\code{cout}\,$=$\,Cout$_i$};
+\end{circuitikz}
+\caption{Gate-level full adder. The shared term $A\oplus B$ feeds both the
+sum's second XOR and the carry's second AND, minimising gate count.}
+\label{fig:fa}
+\end{figure}
+
+\lstinputlisting[style=vlog,caption={\texttt{full\_adder.v}.},
+label={lst:fa}]{rtl/full_adder.v}
+
+\section{The arithmetic circuit}
+The arithmetic unit turns the single adder into eight operations by
+choosing \emph{what the adder's second operand is}. A 4:1 multiplexer
+drives the adder's $B$ input with one of four values selected by
+\code{S1\,S0}, and \bus{Cin} then distinguishes the two operations within
+each opcode (\cref{tab:arithmux}). \Cref{fig:arith} shows the structure.
+
+\begin{table}[htbp]
+\centering
+\caption{Operand-select encoding of the arithmetic unit. Feeding the adder
+$0$, $B$, $\overline{B}$ or $1$ (with the carry-in) realises transfer,
+add, subtract and increment/decrement.}
+\label{tab:arithmux}
+\small
+\begin{tabular}{@{}cc l l@{}}
+\toprule
+\code{S1} & \code{S0} & Adder $B$-input & Resulting function ($C_{in}=0/1$)\\
+\midrule
+0 & 0 & $0$              & $A$ \,/\, $A+1$ \\
+0 & 1 & $B$              & $A+B$ \,/\, $A+B+1$ \\
+1 & 0 & $\overline{B}$   & $A+\overline{B}$ \,/\, $A+\overline{B}+1=A-B$ \\
+1 & 1 & $1$              & $A-1$ \,/\, $A$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small]
+  \muxfour{bm}{0}{1.1}
+  \draw[sig] ($(bm-in0)+(-1.5,0)$) node[left,buslbl]{$0$} -- (bm-in0);
+  \draw[sig] ($(bm-in1)+(-1.5,0)$) node[left,buslbl]{\code{B}} -- (bm-in1);
+  \draw[sig] ($(bm-in2)+(-1.5,0)$) node[left,buslbl]{$\overline{\code{B}}$} -- (bm-in2);
+  \draw[sig] ($(bm-in3)+(-1.5,0)$) node[left,buslbl]{$1$} -- (bm-in3);
+  \draw[sig] (bm-sel) -- ++(0,-0.6) node[below,buslbl]{\code{S1 S0}};
+
+  \node[blk,arith,minimum width=20mm,minimum height=14mm] (fa) at (4.2,0)
+        {Full\\ adder};
+  \draw[sig] (bm-out) -- ($(fa.west)+(0,0.35)$)
+        node[midway,above,buslbl]{$B'$};
+  \draw[sig] ($(fa.west)+(-1.3,-0.35)$) node[left,buslbl]{\code{A}}
+        -- ($(fa.west)+(0,-0.35)$);
+  \draw[sig] ($(fa.south)+(0,-0.9)$) node[below,buslbl]{\code{Cin}}
+        -- (fa.south);
+  \draw[bus] ($(fa.east)+(0,0.25)$) -- ($(fa.east)+(1.4,0.25)$)
+        node[right,buslbl]{$D_i$};
+  \draw[sig] ($(fa.east)+(0,-0.35)$) -- ($(fa.east)+(1.4,-0.35)$)
+        node[right,buslbl]{Cout$_i$};
+\end{tikzpicture}
+\caption{Arithmetic circuit: a 4:1 multiplexer selects the adder's second
+operand ($0$, $B$, $\overline{B}$ or $1$); the full adder then combines it
+with $A$ and the carry-in. Subtraction is two's-complement:
+$\overline{B}+C_{in}$.}
+\label{fig:arith}
+\end{figure}
+
+\lstinputlisting[style=vlog,caption={\texttt{arithmetic\_circuit.v}.},
+label={lst:arith}]{rtl/arithmetic_circuit.v}
+
+\paragraph{Design decision --- two's-complement subtraction.}
+Rather than build a dedicated subtractor, subtraction reuses the same
+adder: $A-B = A + \overline{B} + 1$. Selecting $\overline{B}$ at the mux
+and driving $C_{in}=1$ yields $A-B$, while $C_{in}=0$ yields the
+subtract-with-borrow result $A+\overline{B}$. This is why the functional
+table pairs each opcode with a \bus{Cin} value, and it keeps the slice to
+a single adder.
+
+\section{The logic circuit}
+The logic unit computes the four bitwise functions of $A$ and $B$ in
+parallel and selects one with a 4:1 multiplexer on \code{S1\,S0}
+(\cref{fig:logic}).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small]
+  \node[logic] (g0) at (0,1.6) {\code{A\,\&\,B}};
+  \node[logic] (g1) at (0,0.6) {\code{A\,|\,B}};
+  \node[logic] (g2) at (0,-0.4){\code{A\,\^{}\,B}};
+  \node[logic] (g3) at (0,-1.4){\code{\~{}A}};
+  \muxfour{lm}{3.6}{1.1}
+  \draw[sig] (g0.east) -- (lm-in0);
+  \draw[sig] (g1.east) -- (lm-in1);
+  \draw[sig] (g2.east) -- (lm-in2);
+  \draw[sig] (g3.east) -- (lm-in3);
+  \draw[sig] (lm-sel) -- ++(0,-0.6) node[below,buslbl]{\code{S1 S0}};
+  \draw[bus] (lm-out) -- ++(1.3,0) node[right,buslbl]{$E_i$};
+  \draw[sig] (-2.2,1.6) node[left,buslbl]{\code{A,B}} -- (g0.west);
+  \draw[sig] (-2.2,1.6) -- ++(0.3,0) |- (g1.west);
+  \draw[sig] (-2.2,1.6) -- ++(0.15,0) |- (g2.west);
+  \draw[sig] (-2.2,1.6) -- ++(0.05,0) |- (g3.west);
+\end{tikzpicture}
+\caption{Logic circuit: AND, OR, XOR and NOT are computed in parallel and
+a 4:1 multiplexer selects the required one.}
+\label{fig:logic}
+\end{figure}
+
+\lstinputlisting[style=vlog,caption={\texttt{logic\_circuit.v}.},
+label={lst:logic}]{rtl/logic_circuit.v}
+
+\section{Why this architecture}
+The slice is deliberately regular. All three sub-blocks are combinational,
+share the lower select bits, and expose exactly one horizontal carry
+signal to the next slice. That regularity is what allows a single verified
+cell to be tiled thirty-two times with nothing more than a carry chain and
+two shift connections --- the subject of \cref{ch:part2a}. The trade-off,
+examined there, is that the resulting carry path is a \emph{ripple} chain,
+which becomes the critical path of the 32-bit design.

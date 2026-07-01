@@ -1,0 +1,92 @@
+\chapter{Comparison and Core Selection}
+\label{ch:compare}
+
+The assignment requires the two 32-bit cores to be compared and the
+smaller one carried forward to chip integration. This chapter consolidates
+the synthesis results and justifies the choice.
+
+\section{Consolidated results}
+\Cref{tab:compare} gathers the area, power and timing figures for all
+three designs. The 1-bit slice is included for reference; the decision is
+between the two 32-bit cores.
+
+\begin{table}[htbp]
+\centering
+\caption{Synthesis comparison (Genus, \texttt{gsclib045},
+\texttt{PVT\_0P9V\_125C}).}
+\label{tab:compare}
+\small
+\begin{tabularx}{\linewidth}{@{}X r r r@{}}
+\toprule
+Metric & 1-bit slice & \makecell[r]{32-bit\\hierarchical (2a)} &
+\makecell[r]{32-bit\\behavioural (2b)}\\
+\midrule
+Standard cells        & 12     & 367     & 635\\
+Total area (\umsq)     & 39.67  & 975.45  & 1487.02\\
+\quad buffers (\umsq)   & 16.42  & 325.58  & 329.00\\
+\quad logic (\umsq)     & 22.57  & 625.59  & 1118.00\\
+Total power (\si{\micro\watt}) & 0.998 & 25.32 & 22.29\\
+Critical path (\si{\nano\second}) & 3.881 & 9.724 & 9.832\\
+Est.\ $f_{\max}$ (\si{\mega\hertz}) & $\approx$257 & $\approx$103 & $\approx$102\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small]
+  \def\scale{0.0035}
+  % axis
+  \draw[->] (0,0) -- (0,6) node[above,font=\footnotesize]{area (\umsq)};
+  \foreach \y in {0,500,1000,1500}{
+    \draw (0,{\y*\scale}) -- (-0.1,{\y*\scale}) node[left,font=\scriptsize]{\y};
+    \draw[gray!25] (0,{\y*\scale}) -- (7,{\y*\scale});
+  }
+  % bars
+  \fill[arithblk!70] (0.8,0) rectangle (2.4,{975.452*\scale});
+  \node[above,font=\scriptsize] at (1.6,{975.452*\scale}) {975.5};
+  \node[below,align=center,font=\scriptsize] at (1.6,0)
+       {hierarchical\\(2a)};
+  \fill[padblk!70] (3.6,0) rectangle (5.2,{1487.016*\scale});
+  \node[above,font=\scriptsize] at (4.4,{1487.016*\scale}) {1487.0};
+  \node[below,align=center,font=\scriptsize] at (4.4,0)
+       {behavioural\\(2b)};
+  % delta annotation
+  \draw[<->,accent] (2.4,{975.452*\scale}) -- (2.4,{1487.016*\scale});
+  \node[right,accent,font=\scriptsize,align=left] at (2.5,{1231*\scale})
+       {$-34.4\%$};
+\end{tikzpicture}
+\caption{Core-area comparison. The hierarchical design is
+\SI{34.4}{\percent} smaller than the behavioural design
+(\SI{975.5}{\micro\meter\squared} vs \SI{1487.0}{\micro\meter\squared}).}
+\label{fig:areacompare}
+\end{figure}
+
+\section{Discussion}
+\begin{description}[leftmargin=1.6em,style=nextline]
+  \item[Area] The hierarchical core is \SI{34.4}{\percent} smaller
+        (\cref{fig:areacompare}). The behavioural code writes each
+        arithmetic operation as an independent \code{+}, so the
+        synthesiser infers about twice the adder hardware
+        (64 vs 32 full adders) and cannot share it; operand-mux reuse in
+        the structural design keeps its datapath lean.
+  \item[Speed] The two are effectively tied
+        (\SI{9.72}{\nano\second} vs \SI{9.83}{\nano\second}); both are
+        limited by a 32-stage ripple carry, so neither style wins on the
+        critical path.
+  \item[Power] The behavioural design draws marginally less total power
+        (\SI{22.29}{} vs \SI{25.32}{\micro\watt}) despite its larger area,
+        because its redundant adders are not all active for any single
+        operation --- a small effect that does not offset the area gap.
+\end{description}
+
+\section{Selected core}
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\centering
+The \textbf{32-bit hierarchical (structural) core} is selected for chip
+integration: it is \SI{34.4}{\percent} smaller than the behavioural core
+and marginally faster, at equivalent functionality.}}
+\end{center}
+\noindent
+Its GDSII (\code{alu\_32bit.gds}) is streamed out of Innovus and imported
+into Virtuoso for pad-frame assembly in \cref{ch:pad}.

@@ -1,0 +1,153 @@
+\chapter{Part 2a --- 32-bit Hierarchical ALU}
+\label{ch:part2a}
+
+The first 32-bit realisation is \emph{structural}: it instantiates
+thirty-two copies of the verified 1-bit slice and wires their carries into
+a ripple chain. This is the direct expression of the bit-slice methodology
+and is the design ultimately chosen for the chip.
+
+\section{Bit-slice chaining}
+\Cref{fig:chain} shows the construction. Slice~$i$ takes operand bits
+$A_i$, $B_i$ and the carry $C_i$ from the slice below, and produces result
+bit $F_i$ and the carry $C_{i+1}$ for the slice above. The external
+\bus{Cin} enters slice~0; the final carry $C_{32}$ becomes \bus{Cout}. The
+same \sel{} bus fans out to every slice, so all slices perform the same
+operation on their respective bit.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small,node distance=6mm]
+  \foreach \i/\x in {0/0, 1/2.6, 2/5.2}{
+    \node[arith,minimum width=18mm,minimum height=14mm] (s\i) at (\x,0)
+         {ALU\\ slice \i};
+  }
+  \node at (7.0,0) {$\cdots$};
+  \node[arith,minimum width=18mm,minimum height=14mm] (s31) at (8.8,0)
+       {ALU\\ slice 31};
+
+  % Carry chain (left to right)
+  \draw[sig] (-1.6,0) node[left,buslbl]{Cin} -- (s0.west);
+  \draw[sig] (s0.east) -- node[above,buslbl]{$C_1$} (s1.west);
+  \draw[sig] (s1.east) -- node[above,buslbl]{$C_2$} (s2.west);
+  \draw[sig] (s2.east) -- node[above,buslbl]{$C_3$} (6.6,0);
+  \draw[sig] (7.4,0) -- node[above,buslbl]{$C_{31}$} (s31.west);
+  \draw[sig] (s31.east) -- (10.4,0) node[right,buslbl]{Cout};
+
+  % Operand inputs (top) and results (bottom)
+  \foreach \i in {0,1,2,31}{
+    \draw[sig] ($(s\i.north)+(-0.35,0.7)$) node[above,buslbl]{$A_{\i}$}
+          -- ($(s\i.north)+(-0.35,0)$);
+    \draw[sig] ($(s\i.north)+(0.35,0.7)$) node[above,buslbl]{$B_{\i}$}
+          -- ($(s\i.north)+(0.35,0)$);
+    \draw[sig] (s\i.south) -- ($(s\i.south)+(0,-0.7)$)
+          node[below,buslbl]{$F_{\i}$};
+  }
+\end{tikzpicture}
+\caption{Ripple-carry chaining of thirty-two 1-bit ALU slices. The carry
+propagates left-to-right from \bus{Cin} to \bus{Cout}; \sel{} (not shown)
+broadcasts to all slices.}
+\label{fig:chain}
+\end{figure}
+
+\lstinputlisting[style=vlog,firstline=1,lastline=14,
+  caption={\texttt{alu\_32bit.v} --- port list, carry vector and the first
+  slice instance (slices 1--31 are identical, indices incremented).},
+  label={lst:alu32}]{rtl/alu_32bit.v}
+
+The shift operations are handled once at the top level rather than inside
+each slice: when \code{S3\,S2}$=10$ or $11$ the 32-bit result is
+\code{a\_i>>1} or \code{a\_i<<1} and \bus{Cout} is forced to $0$, exactly
+mirroring the per-slice output mux of \cref{fig:alu1top} but applied to the
+whole word.
+
+\paragraph{Design decision --- ripple carry.}
+Chaining the slice carries produces a \emph{ripple-carry adder}: simple,
+compact, and a perfect fit for the bit-slice structure, but with a carry
+that must propagate through all 32 stages in the worst case. As the timing
+results below confirm, this carry chain is the critical path of the
+design --- the classic area-versus-speed trade-off of ripple carry against
+carry-lookahead.
+
+\section{Functional simulation}
+The 32-bit structural ALU is simulated with wide operands across all
+operation classes; \cref{fig:hiersim} shows the result matching the
+expected arithmetic, logic and shift outputs.
+
+\reportfig{0.95}{fig12_hier_sim}{32-bit hierarchical ALU simulation, built
+from thirty-two 1-bit slices.}{fig:hiersim}
+
+\section{Synthesis}
+Genus synthesises the structural design to \textbf{367 cells}
+(\cref{fig:hiersynth}). \Cref{tab:hierarea} summarises the area; the
+thirty-two \texttt{ADDFX1} full adders ($\SI{164.2}{\micro\meter\squared}$)
+are the arithmetic backbone, and clock/DRC buffers again make up a large
+share.
+
+\reportfig{0.95}{fig13_hier_synth}{Genus synthesis schematic of the 32-bit
+hierarchical ALU (367 leaf cells, 32 slice modules).}{fig:hiersynth}
+
+\begin{table}[htbp]
+\centering
+\caption{32-bit hierarchical ALU area breakdown (Genus).}
+\label{tab:hierarea}
+\small
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+Type & Instances & Area (\umsq) & Share \\
+\midrule
+Inverter & 35  & 24.282  & \SI{2.5}{\percent}\\
+Buffer   & 65  & 325.584 & \SI{33.4}{\percent}\\
+Logic    & 267 & 625.586 & \SI{64.1}{\percent}\\
+\midrule
+\textbf{Total} & \textbf{367} & \textbf{975.452} & \SI{100}{\percent}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\reportfig{0.55}{fig14_hier_area}{Genus area report, 32-bit hierarchical
+ALU.}{fig:hierarea}
+
+\section{Power}
+Estimated total power is \textbf{\SI{25.32}{\micro\watt}}
+(\cref{fig:hierpower}), again dominated by switching activity.
+
+\reportfig{0.75}{fig15_hier_power}{Genus power report, 32-bit hierarchical
+ALU.}{fig:hierpower}
+
+\section{Place and route}
+\Cref{fig:hierpnr} shows the placed-and-routed core in Innovus.
+
+\reportfig{0.6}{fig16_hier_pnr}{Innovus place-and-route of the 32-bit
+hierarchical ALU.}{fig:hierpnr}
+
+\section{Physical verification}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.48\linewidth}\centering
+  \includegraphics[width=\linewidth]{fig17_hier_drc}
+  \caption{DRC results}\label{fig:hierdrc}
+\end{subfigure}\hfill
+\begin{subfigure}{0.48\linewidth}\centering
+  \includegraphics[width=\linewidth]{fig18_hier_conn}
+  \caption{Connectivity check}\label{fig:hierconn}
+\end{subfigure}
+\caption{Physical signoff of the 32-bit hierarchical ALU: DRC and
+connectivity both clean.}
+\label{fig:hiersign}
+\end{figure}
+
+\section{Timing and maximum speed}
+Static timing analysis reports a worst-case critical path of
+\textbf{\SI{9.724}{\nano\second}}. As anticipated, the path runs through
+the \textbf{ripple-carry chain}: from an early select/operand bit, through
+the arithmetic mux of slice~0, and then \code{CI}$\rightarrow$\code{CO}
+across all thirty-two \texttt{ADDFX1} adders to \code{f\_o[31]}. Each adder
+stage contributes roughly \SI{186}{\pico\second} of carry delay, so the
+32-stage chain dominates. The estimated maximum frequency is
+\begin{equation}
+  f_{\max} \approx \frac{1}{\SI{9.724}{\nano\second}}
+           \approx \SI{102.8}{\mega\hertz}.
+\end{equation}
+This ripple-carry delay is the price of the simple, highly regular
+bit-slice structure, and it is the number carried into the comparison of
+\cref{ch:compare}.

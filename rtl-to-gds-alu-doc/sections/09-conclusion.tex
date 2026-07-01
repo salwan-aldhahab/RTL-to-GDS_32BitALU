@@ -1,0 +1,81 @@
+\chapter{Conclusion}
+\label{ch:conc}
+
+\section{Summary}
+A 32-bit Arithmetic-Logic Unit was designed and carried through the
+complete Cadence RTL-to-GDS flow on the GPDK045 \SI{45}{\nano\meter} CMOS
+process. Following a bit-slice methodology, a 1-bit ALU slice was designed,
+exhaustively verified, synthesised and physically implemented; thirty-two
+slices were then chained into a 32-bit ALU. A behavioural 32-bit design was
+implemented in parallel for comparison. \Cref{tab:final} recaps the
+headline results.
+
+\begin{table}[htbp]
+\centering
+\caption{Final results at a glance.}
+\label{tab:final}
+\small
+\begin{tabularx}{\linewidth}{@{}X r r r@{}}
+\toprule
+& 1-bit slice & \makecell[r]{32-bit\\hierarchical} &
+  \makecell[r]{32-bit\\behavioural}\\
+\midrule
+Cells                       & 12    & 367    & 635\\
+Area (\umsq)                 & 39.67 & 975.45 & 1487.02\\
+Power (\si{\micro\watt})     & 0.998 & 25.32  & 22.29\\
+Critical path (\si{\nano\second}) & 3.881 & 9.724 & 9.832\\
+$f_{\max}$ (\si{\mega\hertz}) & $\approx$257 & $\approx$103 & $\approx$102\\
+DRC / connectivity          & clean & clean  & clean\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The hierarchical core was \SI{34.4}{\percent} smaller than the behavioural
+core at equivalent function and speed, so it was selected, streamed out as
+GDSII, and placed into a 104-pad, four-edge pad frame in Virtuoso to form
+the chip.
+
+\section{Key design decisions}
+\begin{itemize}
+  \item \textbf{Bit-slice architecture} --- one verified 1-bit cell tiled
+        32 times, giving modularity, reuse and low verification effort.
+  \item \textbf{Single shared adder per slice} --- add, subtract,
+        increment and decrement are realised by multiplexing the adder's
+        second operand ($0$, $B$, $\overline{B}$, $1$) with two's
+        complement for subtraction.
+  \item \textbf{Two-level select} --- \code{S3\,S2} chooses the operation
+        class at the output mux, \code{S1\,S0} chooses the specific
+        function, keeping every slice identical.
+  \item \textbf{Structural over behavioural} --- chosen for
+        \SI{34.4}{\percent} smaller area thanks to adder sharing.
+  \item \textbf{Worst-case corner} --- signoff on
+        \texttt{slow\_vdd1v0} / \texttt{PVT\_0P9V\_125C} so timing is
+        conservative.
+  \item \textbf{Edge-grouped pad plan} --- operands, result and controls
+        grouped per edge to minimise core-to-pad routing.
+\end{itemize}
+
+\section{Limitations and future work}
+\begin{description}[leftmargin=1.6em,style=nextline]
+  \item[Ripple-carry critical path] Both 32-bit designs are limited to
+        $\approx$\SI{100}{\mega\hertz} by the 32-stage carry ripple.
+        Replacing it with a carry-lookahead or carry-select adder would
+        cut the critical path at a modest area cost.
+  \item[Incomplete pad wiring] The core is placed in the pad frame and a
+        subset of I/O nets are wired, but the full 104-pad connection was
+        not finished. Completing it and running full-chip DRC/LVS is the
+        remaining step to a tape-out-ready layout.
+  \item[Unconnected shift pads] \bus{DR}/\bus{DL} are reserved but not
+        driven into the datapath; wiring them realises true serial shift.
+  \item[Combinational only] The ALU has no registers; embedding it in a
+        pipelined datapath would require input/output registers and clock
+        distribution (a clock tree, absent here as the design is
+        combinational).
+\end{description}
+
+\section{Closing}
+The project demonstrates the full professional VLSI design experience:
+from a specification and Verilog RTL, through simulation, synthesis,
+place-and-route, physical verification and GDSII export, to full-chip
+integration in a pad frame --- with quantified area, power and timing
+trade-offs driving the design decisions at each step.

@@ -1,0 +1,126 @@
+\chapter{The RTL-to-GDS ASIC Flow}
+\label{ch:flow}
+
+This chapter gives the overall methodology --- the sequence of design
+steps that turn a Verilog description into a manufacturable layout --- and
+the tools and technology used at each stage. The remaining chapters then
+apply this flow to the 1-bit slice and to the two 32-bit designs.
+
+\section{Flow overview}
+The RTL-to-GDS (or ``RTL-to-GDSII'') flow is the standard digital ASIC
+implementation methodology. Design intent is captured at the
+register-transfer level and progressively refined --- through synthesis
+and physical implementation --- into geometry, while functional and
+physical correctness are checked at every hand-off. \Cref{fig:flow}
+summarises the steps used in this project and the artefacts produced at
+each one.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=6mm and 22mm,font=\small]
+  \node[flow] (spec) {1.\ Specification\\{\footnotesize function table, I/O}};
+  \node[flow,below=of spec] (rtl) {2.\ RTL design\\{\footnotesize Verilog: structural + behavioural}};
+  \node[flow,below=of rtl] (sim) {3.\ Functional simulation\\{\footnotesize Xcelium + testbenches}};
+  \node[flow,below=of sim] (syn) {4.\ Logic synthesis\\{\footnotesize Genus + \texttt{gsclib045}}};
+  \node[flow,below=of syn] (pnr) {5.\ Place \& Route\\{\footnotesize Innovus: floorplan, place, route}};
+  \node[flow,below=of pnr] (sign) {6.\ Physical signoff\\{\footnotesize DRC, connectivity, timing}};
+  \node[flow,below=of sign] (gds) {7.\ GDSII export\\{\footnotesize core layout stream-out}};
+  \node[flow,below=of gds] (chip) {8.\ Chip integration\\{\footnotesize pad frame in Virtuoso}};
+
+  \foreach \a/\b in {spec/rtl,rtl/sim,sim/syn,syn/pnr,pnr/sign,sign/gds,gds/chip}
+     \draw[flowarr] (\a) -- (\b);
+
+  % Right-hand annotations (artefacts)
+  \node[right=of rtl,align=left,font=\footnotesize] (a1)
+       {\code{.v} source \& testbenches};
+  \node[right=of syn,align=left,font=\footnotesize] (a2)
+       {gate netlist, \code{.sdc},\\ area/power/timing reports};
+  \node[right=of pnr,align=left,font=\footnotesize] (a3)
+       {routed \code{DEF}, parasitics};
+  \node[right=of gds,align=left,font=\footnotesize] (a4)
+       {\code{alu\_32bit.gds}};
+  \foreach \n/\a in {rtl/a1,syn/a2,pnr/a3,gds/a4}
+     \draw[-{Latex[length=1.6mm]},gray,dashed] (\n.east) -- (\a.west);
+
+  % Feedback loop: signoff failures return to place & route / synthesis
+  \draw[flowarr,accent!70,dashed]
+     (sign.west) -- ++(-1.2,0) |- node[pos=0.25,left,font=\footnotesize,align=right]
+        {ECO / fix\\violations} (pnr.west);
+\end{tikzpicture}
+\caption{The RTL-to-GDS flow applied in this project. Solid arrows show
+the forward flow; the dashed feedback path indicates iteration when
+signoff checks (timing, DRC, connectivity) fail.}
+\label{fig:flow}
+\end{figure}
+
+\section{Process technology and libraries}
+All implementation uses the Cadence \textbf{GPDK045} generic
+\SI{45}{\nano\meter} CMOS process design kit. \Cref{tab:tech} lists the
+key technology and library settings that appear throughout the synthesis
+and PnR reports.
+
+\begin{table}[htbp]
+\centering
+\caption{Technology and library configuration.}
+\label{tab:tech}
+\small
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+\toprule
+Item & Setting \\
+\midrule
+Process               & Cadence GPDK045, \SI{45}{\nano\meter} bulk CMOS \\
+Standard-cell library & \texttt{gsclib045} (LEF: \texttt{gsclib045\_tech.lef},
+                        \texttt{gsclib045\_macro.lef}) \\
+Timing corner         & \texttt{PVT\_0P9V\_125C}, worst-case
+                        \texttt{slow\_vdd1v0} liberty \\
+Supply / ground nets  & \texttt{VDD} / \texttt{VSS} \\
+Routing pin layer     & Metal~4 (from the pin-assignment file) \\
+Multi-mode multi-corner& \texttt{mmmc.view} (setup on slow corner) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Choosing the \emph{slow}, low-voltage, high-temperature corner
+(\SI{0.9}{\volt}, \SI{125}{\celsius}) for setup analysis is deliberate: it
+represents the worst case for cell delay, so timing that closes here
+closes across the operating range. All area/power/timing numbers quoted in
+this report are from this corner unless stated otherwise.
+
+\section{Tools used}
+\Cref{tab:tools} maps each flow step to the Cadence tool that performs it.
+
+\begin{table}[htbp]
+\centering
+\caption{Tools used at each stage of the flow.}
+\label{tab:tools}
+\small
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+\toprule
+Stage & Tool & Role \\
+\midrule
+Simulation      & Xcelium (SimVision) & Event-driven verification of RTL against testbenches \\
+Synthesis       & Genus 21.17         & RTL $\rightarrow$ gate netlist mapped to \texttt{gsclib045}; area/power/timing \\
+Place \& Route  & Innovus             & Floorplan, power, placement, routing, post-route timing \\
+Signoff         & Innovus / Pegasus / Assura & DRC and connectivity (LVS-style) checks \\
+Chip assembly   & Virtuoso            & Pad-frame placement, I/O wiring, full-chip stream-out \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Design flavours implemented}
+Because the assignment requires the 32-bit ALU to be built ``in two
+ways,'' three distinct RTL designs are carried through the flow:
+\begin{description}[leftmargin=2.4em,style=nextline]
+  \item[Part 1 --- 1-bit ALU] the bit-slice cell, verified in isolation
+        and taken through synthesis and PnR on its own
+        (\cref{ch:part1}).
+  \item[Part 2a --- 32-bit hierarchical] a \emph{structural} design that
+        instantiates thirty-two 1-bit slices and connects their carries in
+        a ripple chain (\cref{ch:part2a}).
+  \item[Part 2b --- 32-bit behavioural] a single-module design that models
+        the operations directly on 32-bit vectors with a \code{casez}
+        statement (\cref{ch:part2b}).
+\end{description}
+The two 32-bit cores are compared in \cref{ch:compare}; the smaller and
+faster one is streamed out and dropped into the pad frame in
+\cref{ch:pad}.

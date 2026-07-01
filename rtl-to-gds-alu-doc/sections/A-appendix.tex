@@ -1,0 +1,29 @@
+\chapter{RTL Source Listings}
+\label{app:rtl}
+
+This appendix contains the complete Verilog source for the designs
+documented in the report. The files are copied verbatim into
+\code{rtl-to-gds-alu-doc/rtl/} so the document is self-contained; they are
+identical to the sources under \code{Part1\_1BitALU/}, \code{Part2a\_32BitALU/}
+and \code{Part2b\_32BitALU/} in the repository.
+
+\section{1-bit slice sub-modules}
+\lstinputlisting[style=vlog,caption={\texttt{full\_adder.v}}]{rtl/full_adder.v}
+\lstinputlisting[style=vlog,caption={\texttt{mux4x1.v}}]{rtl/mux4x1.v}
+\lstinputlisting[style=vlog,caption={\texttt{arithmetic\_circuit.v}}]{rtl/arithmetic_circuit.v}
+\lstinputlisting[style=vlog,caption={\texttt{logic\_circuit.v}}]{rtl/logic_circuit.v}
+\lstinputlisting[style=vlog,caption={\texttt{alu\_1bit.v}}]{rtl/alu_1bit.v}
+
+\section{32-bit hierarchical (structural) ALU}
+\lstinputlisting[style=vlog,caption={\texttt{alu\_32bit.v} --- full
+listing, all 32 slice instances.}]{rtl/alu_32bit.v}
+
+\section{32-bit behavioural ALU}
+\lstinputlisting[style=vlog,caption={\texttt{alu\_32bit\_behavioral.v} ---
+full listing.}]{rtl/alu_32bit_behavioral.v}
+
+\chapter{Testbenches}
+\label{app:tb}
+\lstinputlisting[style=vlog,caption={\texttt{tb\_1bit\_alu.v}}]{rtl/tb_1bit_alu.v}
+\lstinputlisting[style=vlog,caption={\texttt{tb\_32bit\_alu.v}}]{rtl/tb_32bit_alu.v}
+\lstinputlisting[style=vlog,caption={\texttt{tb\_32bit\_alu\_behavioral.v}}]{rtl/tb_32bit_alu_behavioral.v}

@@ -1,0 +1,108 @@
+\chapter{Part 2b --- 32-bit Behavioural ALU}
+\label{ch:part2b}
+
+The second 32-bit realisation describes the same functionality in a single
+\emph{behavioural} module. Instead of instantiating slices, it models the
+operations directly on 32-bit vectors and lets the synthesiser infer the
+datapath. This chapter mirrors the flow of \cref{ch:part2a} so the two can
+be compared cleanly in \cref{ch:compare}.
+
+\section{Behavioural description}
+A single \code{always @*} block with a \code{casez} on \sel{} maps each
+opcode to a vector expression (\cref{lst:behav}). A 33-bit temporary
+captures the carry-out of the arithmetic operations, and explicit defaults
+avoid inferred latches.
+
+\lstinputlisting[style=vlog,firstline=1,lastline=45,
+  caption={\texttt{alu\_32bit\_behavioral.v} --- ports and the arithmetic
+  branches of the \texttt{casez} (logic/shift branches follow the same
+  pattern).},label={lst:behav}]{rtl/alu_32bit_behavioral.v}
+
+\paragraph{Design decision --- behavioural vs.\ structural.}
+The behavioural style is far shorter and easier to write and read: the
+subtract branch is literally \code{a + \~{}b + cin}, and the increment,
+decrement and shift branches are one line each. The cost is control over
+the resulting hardware. Because each arithmetic branch is an independent
+\code{+} expression, the synthesiser infers \emph{several} adders rather
+than reusing one, which --- as the area report shows --- makes this design
+substantially larger than the hierarchical one. The structural design
+trades brevity for a smaller, more predictable datapath.
+
+\section{Functional simulation}
+The behavioural ALU is simulated over the same operation set; the waveform
+in \cref{fig:behavsim} confirms functional equivalence with the structural
+design.
+
+\reportfig{0.95}{fig19_behav_sim}{32-bit behavioural ALU simulation
+waveform.}{fig:behavsim}
+
+\section{Synthesis}
+Genus synthesises the behavioural design to \textbf{635 cells}
+(\cref{fig:behavsynth,tab:behavarea}) --- notably it infers \textbf{64}
+\texttt{ADDFX1} plus \texttt{ADDHX1} adders, twice the arithmetic hardware
+of the structural version, because the separate \code{+} expressions are
+not shared.
+
+\reportfig{0.95}{fig20_behav_synth}{Genus synthesis schematic of the 32-bit
+behavioural ALU.}{fig:behavsynth}
+
+\begin{table}[htbp]
+\centering
+\caption{32-bit behavioural ALU area breakdown (Genus).}
+\label{tab:behavarea}
+\small
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+Type & Instances & Area (\umsq) & Share \\
+\midrule
+Inverter & 58  & 40.014   & \SI{2.7}{\percent}\\
+Buffer   & 67  & 329.004  & \SI{22.1}{\percent}\\
+Logic    & 510 & 1117.998 & \SI{75.2}{\percent}\\
+\midrule
+\textbf{Total} & \textbf{635} & \textbf{1487.016} & \SI{100}{\percent}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\reportfig{0.5}{fig21_behav_area}{Genus area report, 32-bit behavioural
+ALU.}{fig:behavarea}
+
+\section{Power}
+Estimated total power is \textbf{\SI{22.29}{\micro\watt}}
+(\cref{fig:behavpower}) --- slightly lower than the structural design
+despite the larger area, because the redundant adders are not all
+switching simultaneously for a given operation.
+
+\reportfig{0.75}{fig22_behav_power}{Genus power report, 32-bit behavioural
+ALU.}{fig:behavpower}
+
+\section{Place and route}
+\reportfig{0.6}{fig23_behav_pnr}{Innovus place-and-route of the 32-bit
+behavioural ALU.}{fig:behavpnr}
+
+\section{Physical verification}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.48\linewidth}\centering
+  \includegraphics[width=\linewidth]{fig24_behav_drc}
+  \caption{DRC results}\label{fig:behavdrc}
+\end{subfigure}\hfill
+\begin{subfigure}{0.48\linewidth}\centering
+  \includegraphics[width=\linewidth]{fig25_behav_conn}
+  \caption{Connectivity check}\label{fig:behavconn}
+\end{subfigure}
+\caption{Physical signoff of the 32-bit behavioural ALU.}
+\label{fig:behavsign}
+\end{figure}
+
+\section{Timing and maximum speed}
+The behavioural design's critical path is \textbf{\SI{9.832}{\nano\second}},
+essentially identical to the structural design and again dominated by a
+32-stage carry ripple (the inferred adder/incrementer chain
+\code{addinc\_add\_29\_48\_*}). The estimated maximum frequency is
+\begin{equation}
+  f_{\max} \approx \frac{1}{\SI{9.832}{\nano\second}}
+           \approx \SI{101.7}{\mega\hertz}.
+\end{equation}
+So the two 32-bit designs are matched on speed but --- as
+\cref{ch:compare} shows --- not on area.

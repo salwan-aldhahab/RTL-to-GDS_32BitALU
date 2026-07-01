@@ -1,0 +1,118 @@
+% =====================================================================
+%  Design of a 32-bit ALU -- Full RTL-to-GDS ASIC Flow
+%  Technical documentation (EECS 4612, Digital VLSI)
+%
+%  Build:  latexmk -pdf main.tex        (or)   pdflatex main.tex  x2
+%  See README.md for Overleaf / MiKTeX instructions and figure extraction.
+% =====================================================================
+\documentclass[11pt,a4paper,oneside]{report}
+
+\input{preamble}
+
+\begin{document}
+
+% ---------------------------------------------------------------------
+%  Title page
+% ---------------------------------------------------------------------
+\begin{titlepage}
+  \centering
+  \vspace*{1.2cm}
+  {\color{accent}\rule{\linewidth}{1.4pt}}\\[4pt]
+  {\Huge\bfseries Design of a 32-bit ALU}\\[10pt]
+  {\LARGE From RTL to GDSII}\\[8pt]
+  {\large A Complete Cadence ASIC Implementation Flow\\
+   on the GPDK045 \SI{45}{\nano\meter} CMOS Process}\\[6pt]
+  {\color{accent}\rule{\linewidth}{1.4pt}}\\[1.4cm]
+
+  \begin{tikzpicture}[scale=0.95]
+    % A small decorative chip icon
+    \node[core,minimum width=30mm,minimum height=22mm] (c) {\bfseries 32-bit\\ ALU};
+    \foreach \i in {1,...,7}{
+      \pgfmathsetmacro{\t}{\i/8}
+      \draw[padblk,line width=1.4pt] ($(c.north west)!\t!(c.north east)$)
+            -- ++(0,3.2mm);
+      \draw[padblk,line width=1.4pt] ($(c.south west)!\t!(c.south east)$)
+            -- ++(0,-3.2mm);
+      \draw[padblk,line width=1.4pt] ($(c.north west)!\t!(c.south west)$)
+            -- ++(-3.2mm,0);
+      \draw[padblk,line width=1.4pt] ($(c.north east)!\t!(c.south east)$)
+            -- ++(3.2mm,0);
+    }
+  \end{tikzpicture}\\[1.4cm]
+
+  {\large\bfseries Salwan Aldhahab}\\[2pt]
+  {\normalsize Student No.\ 218597963}\\[10pt]
+  {\normalsize EECS 4612 --- Digital VLSI}\\[2pt]
+  {\normalsize Instructor: Prof.\ Amir M.\ Sodagar}\\[2pt]
+  {\normalsize Lassonde School of Engineering, York University}\\[2pt]
+  {\normalsize Fall 2025}\\[1.0cm]
+
+  \begin{minipage}{0.86\linewidth}\small\itshape\color{black!70}\centering
+    A technical report documenting the design, simulation, synthesis,
+    place-and-route, physical verification and full-chip (pad-frame)
+    integration of a 32-bit Arithmetic-Logic Unit implemented with a
+    bit-slice architecture.
+  \end{minipage}
+
+  \vfill
+  {\footnotesize Generated as project documentation. Screenshots and
+   numerical results are reproduced from the term-project report and the
+   Genus/Innovus/Virtuoso output files contained in this repository.}
+\end{titlepage}
+
+% ---------------------------------------------------------------------
+%  Front matter
+% ---------------------------------------------------------------------
+\pagenumbering{roman}
+\setcounter{page}{2}
+
+\begin{abstract}
+\noindent
+This report documents the end-to-end ASIC implementation of a 32-bit
+Arithmetic-Logic Unit (ALU) taken from register-transfer-level (RTL)
+Verilog all the way to a signed-off GDSII layout embedded in an I/O pad
+frame. The ALU is built on a \emph{bit-slice} architecture: a fully
+verified 1-bit slice is designed first, and thirty-two identical slices
+are chained through a ripple carry to form the 32-bit datapath. Two
+32-bit realisations are compared---a \emph{structural/hierarchical}
+design that instantiates the 1-bit slice, and a single-block
+\emph{behavioral} design---and the smaller, faster hierarchical core is
+selected for chip integration.
+
+The complete Cadence RTL-to-GDS flow is exercised on the GPDK045
+\SI{45}{\nano\meter} CMOS process: functional simulation in Xcelium,
+logic synthesis with the \texttt{gsclib045} library in Genus,
+place-and-route in Innovus, DRC and connectivity signoff, GDSII export,
+and finally pad-frame assembly in Virtuoso. Synthesis results give a core
+area of \SI{975.5}{\micro\meter\squared} (367 cells) and a worst-corner
+critical path of \SI{9.72}{\nano\second} for the chosen hierarchical
+core, dominated---as expected---by the 32-stage ripple-carry chain. Each
+flow step is presented with the underlying design decisions, the relevant
+schematics, and the tool screenshots and result tables.
+\end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+% ---------------------------------------------------------------------
+%  Main matter
+% ---------------------------------------------------------------------
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{sections/01-introduction}
+\input{sections/02-asic-flow}
+\input{sections/03-architecture}
+\input{sections/04-part1-1bit}
+\input{sections/05-part2a-hierarchical}
+\input{sections/06-part2b-behavioral}
+\input{sections/07-comparison}
+\input{sections/08-padframe}
+\input{sections/09-conclusion}
+
+\appendix
+\input{sections/A-appendix}
+
+\end{document}

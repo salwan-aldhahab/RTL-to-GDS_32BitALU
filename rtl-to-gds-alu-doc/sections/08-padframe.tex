@@ -1,0 +1,150 @@
+\chapter{Pad Frame and Chip Integration}
+\label{ch:pad}
+
+The final flow step turns the routed core into a complete chip. The
+selected hierarchical core (\cref{ch:compare}) is streamed out as GDSII and
+imported into Cadence Virtuoso, where it is placed inside a provided
+\textbf{pad frame} --- the ring of I/O pads that connects the internal
+signals to the outside world (bond wires / package). This chapter
+documents the pad plan, the pad-to-signal wiring, and the assembled
+layout.
+
+\section{Pad plan}
+The chip uses a \textbf{104-signal} pad ring with \textbf{26 pads on each
+of the four edges}. Grouping the buses by edge keeps the core-to-pad
+routing short and untangled: the 32-bit \bus{A} and \bus{B} operands enter
+from the top and left, the 32-bit \bus{F} result leaves from the right and
+bottom, and the control signals sit together on the bottom edge.
+\Cref{fig:padring} shows the arrangement and \cref{tab:pinmap} gives the
+exact per-edge assignment taken from the Innovus pin-assignment file
+(\code{pinAssignment.io}).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small,scale=1.05]
+  % Die outline
+  \draw[thick,rounded corners=2pt] (0,0) rectangle (12,12);
+  % Core
+  \node[core,minimum width=44mm,minimum height=44mm] (core) at (6,6)
+      {\bfseries alu\_32bit\\ core\\[2pt]
+       {\footnotesize\SI{975.5}{\micro\meter\squared}}};
+
+  % Pad ticks on the four edges (26 per edge)
+  \foreach \i in {0,...,25}{
+    \pgfmathsetmacro{\p}{1+\i*10/25}
+    \fill[pad] ({\p-0.13},11.4) rectangle ({\p+0.13},11.85); % top
+    \fill[pad] ({\p-0.13},0.15) rectangle ({\p+0.13},0.6);   % bottom
+    \fill[pad] (0.15,{\p-0.13}) rectangle (0.6,{\p+0.13});   % left
+    \fill[pad] (11.4,{\p-0.13}) rectangle (11.85,{\p+0.13}); % right
+  }
+  % Corner power pads
+  \foreach \x/\y/\l in {0.35/11.6/VDD, 11.6/11.6/VSS,
+                        0.35/0.4/VSS, 11.6/0.4/VDD}
+    \node[font=\scriptsize\bfseries,text=red!60!black] at (\x,\y) {\l};
+
+  % Example core-to-pad routing (illustrative)
+  \foreach \a/\b in {2/11.4, 4/11.4, 10/11.4}
+    \draw[gray!55,line width=0.5pt] (\a,8.2) -- (\a,11.3);
+  \foreach \a/\b in {3/8.2, 6/8.2, 9/8.2}
+    \draw[gray!55,line width=0.5pt] (\a,3.8) -- (\a,0.62);
+  \foreach \a in {2.5,6,9.5}
+    \draw[gray!55,line width=0.5pt] (8.2,\a) -- (11.35,\a);
+  \foreach \a in {3,6.5,10}
+    \draw[gray!55,line width=0.5pt] (3.8,\a) -- (0.62,\a);
+
+  % ---- Group braces + labels ----
+  % TOP : A[0:25]
+  \draw[decorate,decoration={brace,amplitude=5pt}] (1,12.35) -- (11,12.35);
+  \node[above=6pt,buslbl] at (6,12.35) {\bfseries A[0:25] \; (inputs)};
+  % RIGHT : F[0:25]
+  \draw[decorate,decoration={brace,amplitude=5pt,mirror}]
+        (12.35,11) -- (12.35,1);
+  \node[right=6pt,buslbl] at (12.5,6) {\bfseries F[0:25] (outputs)};
+  % LEFT : lower A[26:31], upper B[0:19]
+  \draw[decorate,decoration={brace,amplitude=4pt}] (-0.35,1) -- (-0.35,3);
+  \node[left=5pt,buslbl,align=right] at (-0.45,2) {A[26:31]};
+  \draw[decorate,decoration={brace,amplitude=4pt}] (-0.35,3.4) -- (-0.35,11);
+  \node[left=5pt,buslbl,align=right] at (-0.45,7.2) {B[0:19]};
+  % BOTTOM groups
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (1,-0.35) -- (5.4,-0.35);
+  \node[below=4pt,buslbl,font=\scriptsize] at (3.2,-0.35) {B[20:31]};
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (5.8,-0.35) -- (7.0,-0.35);
+  \node[below=4pt,buslbl,font=\scriptsize] at (6.4,-0.35) {S[0:3]};
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (7.4,-0.35) -- (8.2,-0.35);
+  \node[below=4pt,buslbl,font=\scriptsize] at (7.8,-0.35) {CIN,DR,DL};
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (8.6,-0.35) -- (10.6,-0.35);
+  \node[below=4pt,buslbl,font=\scriptsize] at (9.6,-0.35) {F[26:31]};
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (10.9,-0.35) -- (11.1,-0.35);
+  \node[below=4pt,buslbl,font=\scriptsize] at (11.4,-0.7) {COUT};
+\end{tikzpicture}
+\caption{Pad-frame plan for the 32-bit ALU chip: 104 signal pads, 26 per
+edge. Operands \bus{A}/\bus{B} enter from the top and left, result \bus{F}
+leaves from the right and bottom, and controls (\bus{S}, \bus{Cin},
+\bus{DR}, \bus{DL}, \bus{Cout}) occupy the bottom edge. Grey lines
+illustrate representative core-to-pad routing; corner pads carry
+\bus{VDD}/\bus{VSS}.}
+\label{fig:padring}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Per-edge pad assignment (from \code{pinAssignment.io}, Metal-4
+pins). 104 signal pads in total.}
+\label{tab:pinmap}
+\small
+\begin{tabularx}{\linewidth}{@{}l l c X@{}}
+\toprule
+Edge & Signals & Pads & Notes\\
+\midrule
+Top    & \bus{A[0:25]}                       & 26 & operand \bus{A}, low half \\
+Left   & \bus{A[26:31]}, \bus{B[0:19]}       & 26 & rest of \bus{A}, start of \bus{B} \\
+Bottom & \bus{B[20:31]}, \bus{S[0:3]}, \bus{CIN}, \bus{DR}, \bus{DL}, \bus{F[26:31]}, \bus{COUT}
+                                             & 26 & controls + high result bits \\
+Right  & \bus{F[0:25]}                       & 26 & result \bus{F}, low half \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Total signal pads}} & \textbf{104} &
+  \bus{VDD}/\bus{VSS} supplied by the pad frame \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Design note --- the shift serial pads.}
+The pad plan reserves two pads, \bus{DR} and \bus{DL}, for the shift
+serial inputs \bus{Din,R}/\bus{Din,L} of the specification. In the RTL as
+implemented the shift result is derived internally from \bus{A}
+(\code{a>>1}/\code{a<<1}), so these two pads are provided for
+specification completeness but are not driven into the core. Wiring them
+to the shift-in position of the datapath is a natural extension.
+
+\section{Assembled chip layout}
+The routed core GDSII is placed inside the pad frame in Virtuoso and the
+pads are wired to the corresponding core pins. \Cref{fig:chippad} shows the
+assembled full-chip layout; \cref{fig:chippin} is the corresponding pin
+(bond) diagram.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.52\linewidth}\centering
+  \includegraphics[width=\linewidth]{fig26_chip_padframe}
+  \caption{Full-chip layout: core inside the pad frame.}
+  \label{fig:chippad}
+\end{subfigure}\hfill
+\begin{subfigure}{0.44\linewidth}\centering
+  \includegraphics[width=\linewidth]{fig27_chip_pindiagram}
+  \caption{Chip pin/bond diagram.}
+  \label{fig:chippin}
+\end{subfigure}
+\caption{Virtuoso assembly of the hierarchical 32-bit ALU into the pad
+frame. The green/pink traces in (a) are the completed core-to-pad
+connections.}
+\label{fig:chip}
+\end{figure}
+
+\paragraph{Status of the wiring.}
+As seen in \cref{fig:chippad}, the core is correctly placed in the frame
+and a subset of the I/O nets (visible in the lower-left) are wired to their
+pads, but \emph{not all} 104 connections were completed within the project
+time budget. The pad plan, pin assignment and routing methodology are
+fully defined (\cref{fig:padring}, \cref{tab:pinmap}); completing the
+remaining pad connections and re-running DRC/LVS on the full chip is the
+final step to a tape-out-ready layout.

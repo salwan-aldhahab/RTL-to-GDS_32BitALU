@@ -1,0 +1,221 @@
+\chapter{Part 1 --- 1-bit ALU Implementation}
+\label{ch:part1}
+
+With the architecture established in \cref{ch:arch}, this chapter takes the
+1-bit slice through the full flow: functional simulation, synthesis,
+place-and-route, physical verification and timing. The screenshots are the
+actual tool captures from the project.
+
+\section{Functional simulation}
+Each sub-block is verified in Xcelium with a self-checking testbench that
+sweeps \emph{all} input combinations, and the assembled slice is then
+verified against the functional table. Because every block is small, the
+test vectors are exhaustive rather than random.
+
+\subsection{4:1 multiplexer}
+The multiplexer is checked by driving two complementary operand sets and
+sweeping the two select bits; the output must equal the selected input
+(\cref{tab:mux,fig:muxsim}).
+
+\begin{table}[htbp]
+\centering
+\caption{4:1 multiplexer truth table (verification vectors).}
+\label{tab:mux}
+\small
+\begin{tabular}{@{}cccc cc c@{}}
+\toprule
+$a$ & $b$ & $c$ & $d$ & S1 & S0 & $y$\\
+\midrule
+0&1&0&1 & 0&0 & 0\\
+0&1&0&1 & 0&1 & 1\\
+0&1&0&1 & 1&0 & 0\\
+0&1&0&1 & 1&1 & 1\\
+1&0&1&0 & 0&0 & 1\\
+1&0&1&0 & 0&1 & 0\\
+1&0&1&0 & 1&0 & 1\\
+1&0&1&0 & 1&1 & 0\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\reportfig{0.95}{fig01_mux_sim}{4:1 multiplexer testbench simulation
+(Xcelium/SimVision). The output \code{y} tracks the input selected by
+\code{S1\,S0}.}{fig:muxsim}
+
+\subsection{Arithmetic circuit}
+The arithmetic unit is swept over $a$, $b$, $C_{in}$ and \code{S1\,S0};
+the result $d$ and carry $C_{out}$ match the expected
+add/subtract/increment/decrement behaviour of \cref{tab:arith}.
+
+\begin{table}[htbp]
+\centering
+\caption{Arithmetic-circuit truth table. $d$ and $C_{out}$ are the full-adder
+outputs for the selected operand ($0$, $B$, $\overline{B}$, $1$).}
+\label{tab:arith}
+\small
+\begin{tabular}{@{}ccc cc cc@{}}
+\toprule
+$a$ & $b$ & $C_{in}$ & S1 & S0 & $d$ & $C_{out}$\\
+\midrule
+0&0&0 & 0&0 & 0&0\\
+0&0&1 & 0&0 & 1&0\\
+0&0&0 & 0&1 & 0&0\\
+0&0&1 & 0&1 & 1&0\\
+0&0&0 & 1&0 & 1&0\\
+0&0&1 & 1&1 & 0&1\\
+1&0&0 & 0&0 & 1&0\\
+1&0&0 & 0&1 & 1&0\\
+1&0&1 & 1&0 & 1&1\\
+1&0&0 & 1&1 & 0&1\\
+1&1&0 & 0&0 & 1&0\\
+1&1&0 & 0&1 & 0&1\\
+1&1&1 & 1&0 & 0&1\\
+1&1&1 & 1&1 & 1&1\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\reportfig{0.95}{fig02_arith_sim}{Arithmetic-circuit testbench simulation.
+Sum \code{d} and carry-out track the selected arithmetic operation.}
+{fig:arithsim}
+
+\subsection{Logic circuit}
+Sweeping $a$, $b$ and \code{S1\,S0} confirms the four bitwise functions
+(\cref{tab:logic,fig:logicsim}).
+
+\begin{table}[htbp]
+\centering
+\caption{Logic-circuit truth table: $e=A\!\cdot\!B$, $A\!+\!B$,
+$A\!\oplus\!B$, $\overline{A}$ for \code{S1\,S0}$=00,01,10,11$.}
+\label{tab:logic}
+\small
+\begin{tabular}{@{}cc cc c@{}}
+\toprule
+$a$ & $b$ & S1 & S0 & $e$\\
+\midrule
+0&0 & 0&0 & 0\\
+0&0 & 0&1 & 0\\
+0&0 & 1&0 & 0\\
+0&0 & 1&1 & 1\\
+1&0 & 0&0 & 0\\
+1&0 & 0&1 & 1\\
+1&0 & 1&0 & 1\\
+1&0 & 1&1 & 0\\
+1&1 & 0&0 & 1\\
+1&1 & 0&1 & 1\\
+1&1 & 1&0 & 0\\
+1&1 & 1&1 & 0\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\reportfig{0.95}{fig03_logic_sim}{Logic-circuit testbench simulation. The
+output \code{e} realises AND / OR / XOR / NOT under \code{S1\,S0}.}
+{fig:logicsim}
+
+\subsection{Assembled 1-bit ALU}
+Finally the full slice is exercised across the operations of
+\cref{tab:func}. \Cref{fig:alu1sim} shows the waveform; \code{f} and
+\code{Cout} follow the specified function for every \sel/\bus{Cin}
+combination.
+
+\reportfig{0.95}{fig04_alu1_sim}{1-bit ALU testbench simulation covering the
+arithmetic, logic and shift operations of \cref{tab:func}.}{fig:alu1sim}
+
+\section{Synthesis}
+The verified RTL is synthesised in Genus against the \texttt{gsclib045}
+library at the \texttt{PVT\_0P9V\_125C} corner. Synthesis elaborates the
+module hierarchy, maps it onto standard cells, and optimises for the given
+constraints. \Cref{fig:alu1synth} shows the resulting gate-level
+schematic.
+
+\reportfig{0.9}{fig05_alu1_synth}{Genus synthesis of the 1-bit ALU:
+elaborated, technology-mapped gate-level netlist.}{fig:alu1synth}
+
+\subsection{Area}
+The slice maps to \textbf{12 cells} totalling \textbf{\SI{39.67}{\micro\meter\squared}}
+(\cref{tab:alu1area}, \cref{fig:alu1area}). Note that two \texttt{CLKBUFX20}
+drive buffers account for \SI{41.4}{\percent} of the area: these are large
+buffers inserted to satisfy the (deliberately heavy) output load used in
+the timing setup, not logic proper.
+
+\begin{table}[htbp]
+\centering
+\caption{1-bit ALU area breakdown by cell type (Genus).}
+\label{tab:alu1area}
+\small
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+Type & Instances & Area (\umsq) & Share \\
+\midrule
+Inverter & 1  & 0.684  & \SI{1.7}{\percent}\\
+Buffer   & 2  & 16.416 & \SI{41.4}{\percent}\\
+Logic    & 9  & 22.572 & \SI{56.9}{\percent}\\
+\midrule
+\textbf{Total} & \textbf{12} & \textbf{39.672} & \SI{100}{\percent}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\reportfig{0.6}{fig06_alu1_area}{Genus area report for the 1-bit ALU.}
+{fig:alu1area}
+
+\subsection{Power}
+Estimated total power is \textbf{\SI{0.998}{\micro\watt}}, of which
+\SI{98.6}{\percent} is dynamic switching power --- expected for a small,
+purely combinational block with no clocked elements (\cref{fig:alu1power}).
+
+\reportfig{0.75}{fig07_alu1_power}{Genus power report for the 1-bit ALU
+(leakage / internal / switching).}{fig:alu1power}
+
+\section{Place and route}
+The netlist is imported into Innovus, floorplanned, placed and routed.
+\Cref{fig:alu1layout} shows the placed-and-routed 1-bit slice with its
+power rails and signal routing.
+
+\reportfig{0.6}{fig08_alu1_layout}{Innovus placement/routing of the 1-bit
+ALU.}{fig:alu1layout}
+
+\section{Physical verification}
+Two signoff checks confirm the layout is manufacturable and matches the
+netlist:
+\begin{itemize}
+  \item \textbf{DRC} --- the geometry obeys all \SI{45}{\nano\meter}
+        design rules (\cref{fig:alu1drc});
+  \item \textbf{Connectivity} --- every net is fully connected with no
+        opens or shorts (\cref{fig:alu1conn}).
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.48\linewidth}\centering
+  \includegraphics[width=\linewidth]{fig09_alu1_drc}
+  \caption{DRC results}\label{fig:alu1drc}
+\end{subfigure}\hfill
+\begin{subfigure}{0.48\linewidth}\centering
+  \includegraphics[width=\linewidth]{fig10_alu1_conn}
+  \caption{Connectivity check}\label{fig:alu1conn}
+\end{subfigure}
+\caption{Physical signoff of the 1-bit ALU: (a) design-rule check and
+(b) connectivity verification both pass.}
+\label{fig:alu1sign}
+\end{figure}
+
+\section{Timing and maximum speed}
+Post-synthesis static timing analysis reports a critical data-path delay
+of \textbf{\SI{3.881}{\nano\second}} through the slice
+(\cref{fig:alu1timing}). The path runs from \code{sel\_i[1]} through the
+arithmetic multiplexer and full adder to the output. Taking the reciprocal
+of the logic delay gives an estimated maximum operating frequency of
+\begin{equation}
+  f_{\max} \approx \frac{1}{\SI{3.881}{\nano\second}}
+           \approx \SI{257}{\mega\hertz},
+\end{equation}
+with the caveat that this is a relaxed-corner synthesis estimate and that
+the reported arrival time includes a large output driver charging the
+test load. All paths meet timing with large positive slack against the
+(intentionally slow) \SI{1}{\micro\second} analysis clock.
+
+\reportfig{0.85}{fig11_alu1_timing}{Genus timing report for the 1-bit ALU;
+the critical path traverses the arithmetic mux and full adder.}
+{fig:alu1timing}

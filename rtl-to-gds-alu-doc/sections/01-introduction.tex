@@ -1,0 +1,137 @@
+\chapter{Introduction}
+\label{ch:intro}
+
+\section{Purpose and scope}
+This report documents the design of a 32-bit Arithmetic-Logic Unit (ALU)
+and its implementation as a complete integrated circuit using the
+industry-standard Cadence RTL-to-GDS design flow. The work was carried
+out on the \textbf{GPDK045 \SI{45}{\nano\meter} CMOS} process kit with the
+\texttt{gsclib045} standard-cell library. Starting from behavioural and
+structural Verilog descriptions, the design is functionally verified,
+synthesised to a gate-level netlist, placed and routed into a physical
+layout, checked for design-rule and connectivity correctness, exported as
+GDSII, and finally embedded inside an I/O pad frame to form a full chip.
+
+The document is written to be read on its own: every flow step is
+explained technically, the architectural and implementation decisions are
+justified, and each result is shown either as a redrawn schematic
+(vector) or as the original tool screenshot captured during the project.
+
+\section{Objectives}
+The project exercises the full professional VLSI toolchain. By the end of
+the flow the design has been:
+\begin{enumerate}
+  \item described in synthesisable Verilog RTL (both structural and
+        behavioural styles);
+  \item simulated and functionally verified against exhaustive test
+        vectors in Xcelium;
+  \item synthesised to a gate-level netlist with area, power and timing
+        reports (Genus);
+  \item placed and routed into a physical layout (Innovus);
+  \item verified for design rules (DRC) and connectivity;
+  \item exported to GDSII; and
+  \item integrated into a pad frame to produce the complete chip layout.
+\end{enumerate}
+
+\section{The target ALU}
+The ALU operates on two 32-bit operands, \bus{A} and \bus{B}, under the
+control of a 4-bit function select \sel{} and a carry-in \bus{Cin}. It
+produces a 32-bit result \bus{F} and a carry-out \bus{Cout}. Two serial
+inputs, \bus{Din,L} and \bus{Din,R}, provide the bits shifted in during
+the ``shift left'' and ``shift right'' operations. The top-level
+input/output interface is shown in \cref{fig:io}.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small]
+  \node[core,minimum width=34mm,minimum height=42mm] (alu)
+        {\bfseries 32-bit\\[2pt] ALU};
+  % Left inputs
+  \foreach \name/\y in {A[31:0]/1.5, B[31:0]/0.6, Cin/-0.3,
+                        {S[3:0]}/-1.2}{
+    \draw[bus] ($(alu.west)+(-1.8,\y)$) node[left,buslbl]{\name}
+               -- ($(alu.west)+(0,\y)$);
+  }
+  % Bottom serial inputs
+  \draw[sig] ($(alu.south)+(-0.8,-1.3)$) node[below,buslbl]{Din,R}
+             -- ($(alu.south)+(-0.8,0)$);
+  \draw[sig] ($(alu.south)+(0.8,-1.3)$) node[below,buslbl]{Din,L}
+             -- ($(alu.south)+(0.8,0)$);
+  % Right outputs
+  \draw[bus] ($(alu.east)+(0,0.7)$) -- ($(alu.east)+(1.8,0.7)$)
+             node[right,buslbl]{F[31:0]};
+  \draw[bus] ($(alu.east)+(0,-0.7)$) -- ($(alu.east)+(1.8,-0.7)$)
+             node[right,buslbl]{Cout};
+\end{tikzpicture}
+\caption{Input/output interface of the target 32-bit ALU. \bus{A} and
+\bus{B} are the 32-bit operands, \sel{} the function select, \bus{Cin} the
+carry-in; \bus{Din,L}/\bus{Din,R} feed the shift operations; \bus{F} is
+the 32-bit result and \bus{Cout} the carry-out.}
+\label{fig:io}
+\end{figure}
+
+The functional specification of the ALU is given in \cref{tab:func}. The
+four select bits are partitioned in hardware: the upper pair
+\code{S3\,S2} chooses between the arithmetic unit, the logic unit and the
+two shift operations, while the lower pair \code{S1\,S0} chooses the
+specific arithmetic or logic function. This partitioning is central to
+the architecture and is developed in \cref{ch:arch}.
+
+\begin{table}[htbp]
+\centering
+\caption{Functional description of the ALU. \bus{Cin} distinguishes the
+two operations sharing each arithmetic opcode; ``X'' denotes a don't-care.}
+\label{tab:func}
+\small
+\begin{tabular}{@{}cccc l l@{}}
+\toprule
+\multicolumn{4}{c}{Select} & \multirow{2}{*}{\bus{Cin}} &
+\multirow{2}{*}{Function}\\
+\cmidrule(r){1-4}
+S3 & S2 & S1 & S0 & & \\
+\midrule
+\rowcolor{accentlight}\multicolumn{6}{l}{\itshape Arithmetic unit
+  (\code{S3\,S2}=00)}\\
+0 & 0 & 0 & 0 & 0 & $F = A$ \hfill (transfer $A$)\\
+0 & 0 & 0 & 0 & 1 & $F = A+1$ \hfill (increment)\\
+0 & 0 & 0 & 1 & 0 & $F = A+B$ \hfill (add)\\
+0 & 0 & 0 & 1 & 1 & $F = A+B+1$ \hfill (add with carry)\\
+0 & 0 & 1 & 0 & 0 & $F = A+\overline{B}$ \hfill (subtract with borrow)\\
+0 & 0 & 1 & 0 & 1 & $F = A+\overline{B}+1$ \hfill (subtract, $A-B$)\\
+0 & 0 & 1 & 1 & 0 & $F = A-1$ \hfill (decrement)\\
+0 & 0 & 1 & 1 & 1 & $F = A$ \hfill (transfer $A$)\\
+\rowcolor{accentlight}\multicolumn{6}{l}{\itshape Logic unit
+  (\code{S3\,S2}=01)}\\
+0 & 1 & 0 & 0 & X & $F = A \cdot B$ \hfill (AND)\\
+0 & 1 & 0 & 1 & X & $F = A + B$ \hfill (OR)\\
+0 & 1 & 1 & 0 & X & $F = A \oplus B$ \hfill (XOR)\\
+0 & 1 & 1 & 1 & X & $F = \overline{A}$ \hfill (NOT)\\
+\rowcolor{accentlight}\multicolumn{6}{l}{\itshape Shift unit
+  (\code{S3\,S2}=1X)}\\
+1 & 0 & X & X & X & $F = \text{shr } A$ \hfill (shift right one bit)\\
+1 & 1 & X & X & X & $F = \text{shl } A$ \hfill (shift left one bit)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Bit-slice design methodology}
+The ALU is built with a \textbf{bit-slice} (modular) scheme. A bit slice
+is a small, identical processing unit that handles a fixed number of bits;
+stacking $N$ slices produces an $N$-bit datapath. The advantages exploited
+here are:
+\begin{itemize}
+  \item \textbf{Modularity} --- each slice computes one bit of the result;
+  \item \textbf{Scalability} --- the same slice yields an 8-, 16-, 32- or
+        64-bit ALU simply by changing the instance count;
+  \item \textbf{Reuse} --- one carefully verified slice is replicated,
+        rather than designing (and re-verifying) a wide datapath from
+        scratch;
+  \item \textbf{Reduced complexity} --- verification effort concentrates
+        on a single 1-bit cell plus the inter-slice carry connection.
+\end{itemize}
+Accordingly, the project first designs and fully verifies a \textbf{1-bit
+ALU slice} (\cref{ch:arch,ch:part1}), then chains \textbf{thirty-two}
+slices into the 32-bit ALU (\cref{ch:part2a}). For comparison, a
+functionally equivalent single-block \textbf{behavioural} 32-bit ALU is
+also written (\cref{ch:part2b}), and the two are compared on area, power
+and speed before one is chosen for chip integration (\cref{ch:compare}).
